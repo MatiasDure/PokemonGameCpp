@@ -1,13 +1,19 @@
 #include "Button.hpp"
 
-Button::Button(string identifier, sf::Vector2f startingPosition, string fileName, GameObject* parent)
-	: SpriteObject(identifier, startingPosition,fileName,parent) {}
+Button::Button(string identifier, string fileName, GameObject* parent)
+	: SpriteObject(identifier, fileName, parent) {}
 
 void Button::HandleEvent(sf::Event& event, sf::RenderWindow& window)
 {
-	if (spriteBoundary.contains(sf::Vector2f(event.mouseButton.x, event.mouseButton.y)))
+	if (mouseHover && event.type == sf::Event::MouseButtonPressed)
 	{
-		if (event.type == sf::Event::MouseButtonPressed) window.close();
+		try
+		{
+			behavior();//window.close();
+		}
+		catch(exception e) {
+			std::cout<< "No function passed to button!" << endl;
+		}
 	}
 }
 
@@ -16,10 +22,17 @@ void Button::Update(sf::RenderWindow& window)
 	sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 	if (spriteBoundary.contains(mousePos.x, mousePos.y))
 	{
-		sprite.setScale(1.5f, 1.5f);
+		mouseHover = true;
+		this->ScaleByMultiplier(1.1f, 1.1f);
 	}
 	else
 	{
-		sprite.setScale(1, 1);
+		mouseHover = false;
+		this->ScaleByMultiplier(1.0f, 1.0f);
 	}
+}
+
+void Button::SetBehavior(const std::function<void()> behavior)
+{
+	this->behavior = behavior;
 }

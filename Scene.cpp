@@ -1,7 +1,7 @@
 #include "Scene.h"
 
-Scene::Scene(const string indentifier) :
-	identifier(identifier) {}
+Scene::Scene(const string identifier, const int popForce) :
+	identifier(identifier), popForce(popForce) {}
 
 void Scene::AddObject(GameObject* objToAdd)
 {
@@ -30,13 +30,18 @@ void Scene::HandleEvent(sf::Event& event, sf::RenderWindow& window)
 	}
 }
 
-//void Scene::Update(sf::RenderWindow& window)
-//{
-//	for (int i = 0; i < this->objectsInScene.size(); i++)
-//	{
-//		this->objectsInScene[i]->Update(window);
-//	}
-//}
+int Scene::GetPopForce(void) const
+{
+	return this->popForce;
+}
+
+void Scene::Update(sf::RenderWindow& window)
+{
+	/*for (int i = 0; i < this->objectsInScene.size(); i++)
+	{
+		this->objectsInScene[i]->Update(window);
+	}*/
+}
 
 void Scene::RenderScene(sf::RenderWindow& window)
 {
@@ -49,17 +54,17 @@ void Scene::RenderScene(sf::RenderWindow& window)
 	window.display();
 }
 
-vector<GameObject*> Scene::GetObjectsInScene() const
+vector<GameObject*> Scene::GetObjectsInScene(void) const
 {
-	return objectsInScene;
+	return this->objectsInScene;
 }
 
-string Scene::GetIdentifier() const
+string Scene::GetIdentifier(void) const
 {
 	return this->identifier;
 }
 
-int Scene::AmountObjectsInScene() const
+int Scene::AmountObjectsInScene(void) const
 {
 	return this->objectsInScene.size();
 }

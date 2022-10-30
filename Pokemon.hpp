@@ -9,8 +9,7 @@ private:
 	friend ostream& operator <<(ostream& outputStream, const Pokemon& p);
 public:
 	//constructor 
-	Pokemon(string name, int power, int hp, int stamina, string identifier, sf::Vector2f startingPosition, 
-		string fileName, GameObject* parent = NULL);
+	Pokemon(string name, int power, int hp, int stamina, string identifier,	string fileName, GameObject* parent = NULL);
 	Pokemon(Pokemon& other);
 
 	//getters

@@ -1,19 +1,29 @@
 #include "PokemonTrainer.hpp"
-#include "ctime"
+//#include "ctime"
 
-PokemonTrainer::PokemonTrainer(string identifier, sf::Vector2f startingPosition, string fileName, const vector<Pokemon*>& pokeList, const int seed, GameObject* parent)
-	:SpriteObject(identifier, startingPosition, fileName, parent),
-	poke(PokemonPicker::RandomPokemon(pokeList, seed)) 
-{;
-}
+PokemonTrainer::PokemonTrainer(string identifier, string fileName, GameObject* parent)
+	:SpriteObject(identifier, fileName, parent), poke(NULL) {}
 
 void PokemonTrainer::RenderGameObject(sf::RenderWindow& window)
 {
 	SpriteObject::RenderGameObject(window);
-	poke.RenderGameObject(window);
+	try {
+		poke->RenderGameObject(window);
+	}
+	catch (exception e)
+	{
+		cout << e.what() << endl;
+	}
 }
 
-Pokemon& PokemonTrainer::GetPokemon()
+void PokemonTrainer::SetRandomPokemon(Pokemon* pokemon)
+{
+	if (poke != NULL) poke->SetParent(NULL);
+	poke = pokemon;
+	poke->SetParent(this);
+}
+
+Pokemon* PokemonTrainer::GetPokemon(void)
 {
 	return this->poke;
 }

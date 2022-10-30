@@ -1,9 +1,12 @@
 #include "GameObject.h"
 
-GameObject::GameObject(string identifier, sf::Vector2f startingPosition, GameObject* parent) :
+GameObject::GameObject(string identifier, GameObject* parent) :
 	identifier(identifier),
-	position(startingPosition),
-	parent(parent) {}
+	parent(parent) 
+{
+	position.x = 0;
+	position.y = 0;
+}
 
 GameObject::GameObject(const GameObject& other) :
 	identifier(other.GetIdentifier()),
@@ -55,6 +58,16 @@ void GameObject::MoveObj(const float x, const float y)
 {
 	position.x += x;
 	position.y += y;
+	for (int i = 0; i < children.size(); i++)
+	{
+		children[i]->MoveObj(x, y);
+	}
+}
+
+void GameObject::SetPosition(const float x, const float y)
+{
+	position.x = x;
+	position.y = y;
 	for (int i = 0; i < children.size(); i++)
 	{
 		children[i]->MoveObj(x, y);

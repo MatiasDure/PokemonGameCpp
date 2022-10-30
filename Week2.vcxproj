@@ -136,6 +136,7 @@
     <ClCompile Include="BattleControl.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Pokemon.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="BattleControl.hpp" />
     <ClInclude Include="Button.hpp" />
     <ClInclude Include="Enemy.hpp" />
+    <ClInclude Include="GameManager.hpp" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Pokemon.hpp" />

@@ -12,16 +12,18 @@ class Scene
 {
 private:
 	const string identifier;
+	const int popForce;
 	vector<GameObject*> objectsInScene;
 
 public: 
-	Scene(const string identifier);
+	Scene(const string identifier, const int popForce);
 	void RenderScene(sf::RenderWindow& window);
 	void Update(sf::RenderWindow& window);
 	void AddObject(GameObject* objToAdd);
 	void RemoveObject(const string identifierOfObj);
 	void HandleEvent(sf::Event& event, sf::RenderWindow& window);
-	string GetIdentifier() const;
-	vector<GameObject*> GetObjectsInScene() const;
-	int AmountObjectsInScene() const;
+	string GetIdentifier(void) const;
+	int GetPopForce(void) const;
+	vector<GameObject*> GetObjectsInScene(void) const;
+	int AmountObjectsInScene(void) const;
 };

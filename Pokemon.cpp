@@ -1,12 +1,12 @@
 #include "Pokemon.hpp"
 
-Pokemon::Pokemon(string name, int power, int hp, int stamina, string identifier, sf::Vector2f startingPosition, string fileName, GameObject* parent)
-	:SpriteObject(identifier, startingPosition, fileName, parent),
+Pokemon::Pokemon(string name, int power, int hp, int stamina, string identifier, string fileName, GameObject* parent)
+	:SpriteObject(identifier, fileName, parent),
 	pokeName(name), power(power), hp(hp), stamina(stamina) {}
 
 Pokemon::Pokemon(Pokemon& other) 
-	:Pokemon(other.GetName(), other.GetPower(), other.GetHP(), other.GetStamina(), other.GetName(), other.GetPosition(), 
-			other.GetFileName(), other.GetParent()) {}
+	:Pokemon(other.GetName(), other.GetPower(), other.GetHP(), other.GetStamina(), other.GetName(),	other.GetFileName(), 
+		other.GetParent()) {}
 
 string Pokemon::GetName() const
 {
