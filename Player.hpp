@@ -4,7 +4,6 @@
 class Player : public PokemonTrainer
 {
 private:
-
 public:
-	Player(string identifier, string fileName, GameObject* parent = NULL);
+	Player(string identifier, string fileName, PokemonTrainer* target = NULL, GameObject* parent = NULL);
 };

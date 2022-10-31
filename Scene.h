@@ -11,6 +11,7 @@ using namespace std;
 class Scene
 {
 private:
+	bool firstRender;
 	const string identifier;
 	const int popForce;
 	vector<GameObject*> objectsInScene;

@@ -1,7 +1,7 @@
 #include "Scene.h"
 
 Scene::Scene(const string identifier, const int popForce) :
-	identifier(identifier), popForce(popForce) {}
+	identifier(identifier), popForce(popForce), firstRender(true) {}
 
 void Scene::AddObject(GameObject* objToAdd)
 {
@@ -49,9 +49,10 @@ void Scene::RenderScene(sf::RenderWindow& window)
 	for (int i = 0; i < this->objectsInScene.size(); i++)
 	{
 		this->objectsInScene[i]->RenderGameObject(window);
-		this->objectsInScene[i]->Update(window);
+		if(!firstRender) this->objectsInScene[i]->Update(window);
 	}
 	window.display();
+	firstRender = false;
 }
 
 vector<GameObject*> Scene::GetObjectsInScene(void) const

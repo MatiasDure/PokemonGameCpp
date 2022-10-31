@@ -171,14 +171,15 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
 
 	//Pokemon trainers
 	Player* player = new Player("Player", "player.png");
-	Enemy* enemy = new Enemy("Enemy", "enemy.png");
+	Enemy* enemy = new Enemy("Enemy", "enemy.png", player);
+	player->SetTarget(enemy);
 
 	//Game manager
 	GameManager* game = new GameManager(*player, *enemy, "Game");
 	
 	//buttons
 	//Switching back to main menu
-	Button* back = new Button("Back", "start.png");
+	Button* back = new Button("Back", "back.png");
 	back->SetBehavior([&manager, game]() {
 		game->ResetGame();
 		manager.PopScene();
@@ -186,12 +187,59 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
 	back->SetPosition(1140, 80);
 	back->SetScale(0.6f, 0.6f);
 
+	//attack button for player
+	Button* attack = new Button("Attack", "attack.png");
+	attack->SetBehavior([player, game]() {
+		if (!player->GetTurn()) return;
+		player->Attack(*player->GetTarget());
+		game->SwitchTurns();
+		});
+	attack->SetPosition(1140, 280);
+	attack->SetScale(0.6f, 0.6f);
+
+	//attack button for enemy (Testing out enemy attack)
+	//Button* eAttack = new Button("Attack", "start.png");
+	//eAttack->SetBehavior([enemy, game]() {
+	//	if (!enemy->GetTurn()) return;
+	//	enemy->Attack(enemy->GetTarget());
+	//	game->SwitchTurns();
+	//	});
+	//eAttack->SetPosition(1140, 580);
+	//eAttack->SetScale(0.6f, 0.6f);
+
+	//Heal button for player
+	Button* heal = new Button("Heal", "heal.png");
+	heal->SetBehavior([player, game]() {
+		if (!player->GetTurn()) return;
+		//cout << enemy->GetPokemon()->GetHP() << endl;
+		cout << player->GetPokemon()->GetHP() << endl;
+		player->Heal(30);
+		cout << player->GetPokemon()->GetHP() << endl;
+		//cout << enemy->GetPokemon()->GetHP() << endl;
+		game->SwitchTurns();
+		});
+	heal->SetPosition(1140, 380);
+	heal->SetScale(0.6f, 0.6f);
+
+	//skip button for player
+	Button* skip = new Button("Skip", "skip.png");
+	skip->SetBehavior([player, game]() {
+		if (!player->GetTurn()) return;
+		game->SwitchTurns();
+		});
+	skip->SetPosition(1140, 480);
+	skip->SetScale(0.6f, 0.6f);
+
 	//Adding objects to the scene
 	scene2->AddObject(game);
 	scene2->AddObject(background);
 	scene2->AddObject(player);
 	scene2->AddObject(enemy);
 	scene2->AddObject(back);
+	scene2->AddObject(attack);
+	//scene2->AddObject(eAttack);
+	scene2->AddObject(heal);
+	scene2->AddObject(skip);
 
 	//Adding created scenes to the manager
 	manager.AddScene(scene1);

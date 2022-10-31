@@ -2,15 +2,29 @@
 
 Pokemon::Pokemon(string name, int power, int hp, int stamina, string identifier, string fileName, GameObject* parent)
 	:SpriteObject(identifier, fileName, parent),
-	pokeName(name), power(power), hp(hp), stamina(stamina) {}
+	pokeName(name), power(power), hp(hp), stamina(stamina), originalHp(hp) {}
 
 Pokemon::Pokemon(Pokemon& other) 
 	:Pokemon(other.GetName(), other.GetPower(), other.GetHP(), other.GetStamina(), other.GetName(),	other.GetFileName(), 
 		other.GetParent()) {}
 
+void Pokemon::TakeDamage(int damage)
+{
+	this->hp -= damage;
+}
+
+void Pokemon::ResetPokemon()
+{
+	hp = originalHp;
+}
+
 string Pokemon::GetName() const
 {
 	return this->pokeName;
+}
+int Pokemon::GetOriginalHp(void) const
+{
+	return this->originalHp;
 }
 int Pokemon::GetPower() const
 {

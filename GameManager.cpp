@@ -1,25 +1,57 @@
 #include "GameManager.hpp"
 
-GameManager::GameManager(Player& player, Enemy& enemy, string identifier, GameObject* parent) : 
-	GameObject(identifier, parent), 
-	player(player), enemy(enemy), score(0), seed(0), win(false), lose(false)
+GameManager::GameManager(Player& player, Enemy& enemy, string identifier, GameObject* parent) :
+	GameObject(identifier, parent),
+	player(player), enemy(enemy), score(0), seed(0), win(false), lose(false), enemyTimer(120)
 {
-	InitializePokemonList();
-	player.SetRandomPokemon(PokemonPicker::RandomPokemon(pokemonList,seed));
-	seed++;
-	enemy.SetRandomPokemon(PokemonPicker::RandomPokemon(pokemonList,seed));
-	seed++;
+	this->InitializePokemonList();
+	this->player.SetRandomPokemon(PokemonPicker::RandomPokemon(pokemonList,seed));
+	this->seed++;
+	this->enemy.SetRandomPokemon(PokemonPicker::RandomPokemon(pokemonList,seed));
+	this->seed++;
+	this->DecideStartingPlayer();
+}
+
+void GameManager::DecideStartingPlayer()
+{
+	srand(time(0));
+	int decision = rand() % 2;
+	if (decision) this->player.SwitchTurn();
+	else this->enemy.SwitchTurn();
+}
+
+void GameManager::Update(sf::RenderWindow& window)
+{
+	if (player.GetTurn()) return;
+	//simulating thinking time
+	//Sleep(2000);
+	cout << "Enemy Thinking what to do" << endl;
+	if (enemyTimer <= 0)
+	{
+		this->enemy.DecideAction();
+		this->SwitchTurns();
+		cout << "Enemy done with turn" << endl;
+		enemyTimer = 120;
+	}
+	else enemyTimer--;
+	//update the game screen
+}
+
+void GameManager::SwitchTurns()
+{
+	this->player.SwitchTurn();
+	this->enemy.SwitchTurn();
 }
 
 void GameManager::ResetGame()
 {
-	score = 0;
-	win = false;
-	lose = false;
-	player.SetRandomPokemon(PokemonPicker::RandomPokemon(pokemonList, seed));
-	seed++;
-	enemy.SetRandomPokemon(PokemonPicker::RandomPokemon(pokemonList, seed));
-	seed++;
+	this->score = 0;
+	this->win = false;
+	this->lose = false;
+	this->player.SetRandomPokemon(PokemonPicker::RandomPokemon(pokemonList, seed));
+	this->seed++;
+	this->enemy.SetRandomPokemon(PokemonPicker::RandomPokemon(pokemonList, seed));
+	this->seed++;
 }
 
 void GameManager::NextLevel()
@@ -38,13 +70,10 @@ void GameManager::ReadHighScores()
 	while (getline(myFile, line) && i < 5)
 	{
 		stringstream lineStream(line);
-		lineStream >> highscores[i++];
+		lineStream >> this->highscores[i++];
 	}
 }
 
-void GameManager::Update()
-{
-}
 
 void GameManager::InitializePokemonList()
 {
@@ -66,3 +95,4 @@ void GameManager::InitializePokemonList()
 	}
 	myFile.close();
 }
+

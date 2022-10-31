@@ -28,21 +28,21 @@ public:
 	void AddChild(GameObject* objToAdd);
 	void RemoveChild(GameObject& objToRemove);
 	void SetParent(GameObject* parent);
-	void RemoveParent();
+	void RemoveParent(void);
 
 	virtual void HandleEvent(sf::Event& event, sf::RenderWindow& window) {};
 	virtual void MoveObj(const sf::Vector2f vec);
 	virtual void MoveObj(const float x, const float y);
 	virtual void SetPosition(const float x, const float y);
 	virtual void SetScale(const float x, const float y) {};
-	bool HasParent() const;
+	bool HasParent(void) const;
 
 	virtual void RenderGameObject(sf::RenderWindow& window) {};
 
 	//Getters
-	string GetIdentifier() const;
-	sf::Vector2f GetPosition() const;
-	GameObject* GetParent() const;
+	string GetIdentifier(void) const;
+	sf::Vector2f GetPosition(void) const;
+	GameObject* GetParent(void) const;
 
 	//overloading comparison operator
 	bool operator == (const GameObject& other) const;
