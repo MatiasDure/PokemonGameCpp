@@ -4,6 +4,7 @@
 #include "Player.hpp"
 #include "Enemy.hpp"
 #include "Pokemon.hpp"
+#include "TextObject.hpp"
 #include <Windows.h>
 
 class GameManager: public GameObject
@@ -16,6 +17,9 @@ private:
 	int enemyTimer;
 	Player& player;
 	Enemy& enemy;
+	TextObject turn, playerHp, enemyHp;
+	string turnText, playerHpText, enemyHpText;
+	sf::Font font;
 	vector<Pokemon*> pokemonList;
 	
 public:
@@ -24,8 +28,10 @@ public:
 	void SwitchTurns();
 	void ResetGame();
 	void NextLevel();
+	void UpdateText(TextObject& textObj, string text);
 	void SetHighScores();
 	void ReadHighScores();
 	void InitializePokemonList();
 	void Update(sf::RenderWindow& window) override;
+	void RenderGameObject(sf::RenderWindow& window) override;
 };

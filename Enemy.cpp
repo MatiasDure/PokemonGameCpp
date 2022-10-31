@@ -3,14 +3,6 @@
 Enemy::Enemy(string identifier, string fileName, PokemonTrainer* target, GameObject* parent)
 	:PokemonTrainer(identifier, fileName, target, parent) {}
 
-void Enemy::Update(sf::RenderWindow& window)
-{
-	if (this->turn)
-	{
-		this->DecideAction();
-	}
-}
-
 void Enemy::DecideAction()
 {
 	srand(time(0));

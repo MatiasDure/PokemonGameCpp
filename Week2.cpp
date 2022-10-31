@@ -11,6 +11,7 @@
 #include "Pokemon.hpp"
 #include "SceneManager.h"
 #include "GameManager.hpp"
+#include "TextObject.hpp"
 
 using namespace std;
 
@@ -78,6 +79,15 @@ int main()
 	 
 	//cout << currentScene.AmountObjectsInScene();
 	
+	//sf::Text text;
+	//sf::Font font;
+	//font.loadFromFile("font.ttf");
+	//text.setString("Hello");
+	//text.setFont(font);
+	//text.setFillColor(sf::Color::Cyan);
+	//text.setPosition(200, 300);
+	//text.setCharacterSize(500);
+
 	//running game loop
 	while (window.isOpen())
 	{
@@ -87,9 +97,11 @@ int main()
 			if (event.type == sf::Event::Closed) window.close();
 			sceneManager.HandleEvent(event, window);
 		}
+		window.clear(sf::Color::Transparent);
 		sceneManager.RenderScene(window);
 		sceneManager.Update(window);
-		
+		//window.draw(text);
+		//window.display();
 		//Printing fps
 		//currentTime = clock.getElapsedTime();
 		//fps = 1.0f / (currentTime.asSeconds() - previousTime.asSeconds()); // the asSeconds returns a float
@@ -158,10 +170,19 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
 		});
 	quit->SetPosition(600, 620);
 
+	//Title
+	TextObject* title = new TextObject("Title");
+	title->SetText("Pokemon C++ Game");
+	title->SetColor(sf::Color::White);
+	title->SetFont("font.ttf");
+	title->SetPosition(380,50);
+	title->SetSize(80);
+
 	//Adding objects to the scene
 	scene1->AddObject(start);
 	scene1->AddObject(erase);
 	scene1->AddObject(quit);
+	scene1->AddObject(title);
 
 	//Fight scene
 	Scene* scene2 = new Scene("Fight", 1);
@@ -191,7 +212,9 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
 	Button* attack = new Button("Attack", "attack.png");
 	attack->SetBehavior([player, game]() {
 		if (!player->GetTurn()) return;
+		cout << player->GetTarget()->GetPokemon()->GetHP() << endl;
 		player->Attack(*player->GetTarget());
+		cout << player->GetTarget()->GetPokemon()->GetHP() << endl;
 		game->SwitchTurns();
 		});
 	attack->SetPosition(1140, 280);
@@ -231,8 +254,8 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
 	skip->SetScale(0.6f, 0.6f);
 
 	//Adding objects to the scene
-	scene2->AddObject(game);
 	scene2->AddObject(background);
+	scene2->AddObject(game);
 	scene2->AddObject(player);
 	scene2->AddObject(enemy);
 	scene2->AddObject(back);

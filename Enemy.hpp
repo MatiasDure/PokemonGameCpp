@@ -7,6 +7,5 @@ private:
 public:
 	Enemy(string identifier, string fileName, PokemonTrainer* target = NULL, GameObject* parent = NULL);
 
-	void Update(sf::RenderWindow& window) override;
 	void DecideAction();
 };

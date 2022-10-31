@@ -13,12 +13,12 @@ void Pokemon::TakeDamage(int damage)
 	this->hp -= damage;
 }
 
-void Pokemon::ResetPokemon()
+void Pokemon::ResetPokemon(void)
 {
 	hp = originalHp;
 }
 
-string Pokemon::GetName() const
+string Pokemon::GetName(void) const
 {
 	return this->pokeName;
 }
@@ -26,15 +26,15 @@ int Pokemon::GetOriginalHp(void) const
 {
 	return this->originalHp;
 }
-int Pokemon::GetPower() const
+int Pokemon::GetPower(void) const
 {
 	return this->power;
 }
-int Pokemon::GetHP() const
+int Pokemon::GetHP(void) const
 {
 	return this->hp;
 }
-int Pokemon::GetStamina() const
+int Pokemon::GetStamina(void) const
 {
 	return this->stamina;
 }

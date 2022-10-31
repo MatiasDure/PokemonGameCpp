@@ -2,7 +2,8 @@
 
 GameManager::GameManager(Player& player, Enemy& enemy, string identifier, GameObject* parent) :
 	GameObject(identifier, parent),
-	player(player), enemy(enemy), score(0), seed(0), win(false), lose(false), enemyTimer(120)
+	player(player), enemy(enemy), score(0), seed(0), win(false), lose(false), enemyTimer(120),
+	turn("Turn"), playerHp("PlayerHP"), enemyHp("EnemyHP")
 {
 	this->InitializePokemonList();
 	this->player.SetRandomPokemon(PokemonPicker::RandomPokemon(pokemonList,seed));
@@ -10,6 +11,29 @@ GameManager::GameManager(Player& player, Enemy& enemy, string identifier, GameOb
 	this->enemy.SetRandomPokemon(PokemonPicker::RandomPokemon(pokemonList,seed));
 	this->seed++;
 	this->DecideStartingPlayer();
+	turnText = player.GetTurn() ? "Player's Turn" : "Enemy's Turn";
+	playerHpText = "Player's HP: " + to_string(player.GetPokemon()->GetHP());
+	enemyHpText = "Enemy's HP: " + to_string(enemy.GetPokemon()->GetHP());
+	cout << enemyHpText << endl;
+	
+	//setting text for game
+	turn.SetText(turnText);
+	turn.SetFont("font.ttf");
+	turn.SetColor(sf::Color::White);
+	turn.SetPosition(460,50);
+	turn.SetSize(50);
+
+	playerHp.SetText(playerHpText);
+	playerHp.SetFont("font.ttf");
+	playerHp.SetColor(sf::Color::Blue);
+	playerHp.SetPosition(200, 550);
+	playerHp.SetSize(50);
+
+	enemyHp.SetText(enemyHpText);
+	enemyHp.SetFont("font.ttf");
+	enemyHp.SetColor(sf::Color::Red);
+	enemyHp.SetPosition(700, 550);
+	enemyHp.SetSize(50);
 }
 
 void GameManager::DecideStartingPlayer()
@@ -22,19 +46,31 @@ void GameManager::DecideStartingPlayer()
 
 void GameManager::Update(sf::RenderWindow& window)
 {
-	if (player.GetTurn()) return;
-	//simulating thinking time
+	this->UpdateText(this->enemyHp, "Enemy's HP: " + to_string(enemy.GetPokemon()->GetHP()));
+	this->UpdateText(this->playerHp, "Player's HP: " + to_string(player.GetPokemon()->GetHP()));
+	
+	if (this->player.GetTurn())
+	{
+		this->UpdateText(this->turn, "Player's Turn");
+		return;
+	}
+	//simulate thinking time for enemy "AI"
 	//Sleep(2000);
-	cout << "Enemy Thinking what to do" << endl;
+	this->UpdateText(this->turn, "Enemy's Turn");
 	if (enemyTimer <= 0)
 	{
 		this->enemy.DecideAction();
 		this->SwitchTurns();
-		cout << "Enemy done with turn" << endl;
 		enemyTimer = 120;
 	}
 	else enemyTimer--;
-	//update the game screen
+}
+
+void GameManager::RenderGameObject(sf::RenderWindow& window)
+{
+	window.draw(turn.GetTextObject());
+	window.draw(playerHp.GetTextObject());
+	window.draw(enemyHp.GetTextObject());
 }
 
 void GameManager::SwitchTurns()
@@ -56,6 +92,11 @@ void GameManager::ResetGame()
 
 void GameManager::NextLevel()
 {
+}
+
+void GameManager::UpdateText(TextObject& textObj, string text)
+{
+	textObj.SetText(text);
 }
 
 void GameManager::SetHighScores()
