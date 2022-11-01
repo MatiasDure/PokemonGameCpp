@@ -11,6 +11,7 @@ Pokemon::Pokemon(Pokemon& other)
 void Pokemon::TakeDamage(int damage)
 {
 	this->hp -= damage;
+	hp = hp < 0 ? 0 : hp;
 }
 
 void Pokemon::ResetPokemon(void)

@@ -38,7 +38,7 @@ GameManager::GameManager(Player& player, Enemy& enemy, string identifier, GameOb
 
 void GameManager::DecideStartingPlayer()
 {
-	srand(time(0));
+	//srand(time(0));
 	int decision = rand() % 2;
 	if (decision) this->player.SwitchTurn();
 	else this->enemy.SwitchTurn();

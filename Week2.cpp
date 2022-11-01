@@ -50,6 +50,7 @@ void InitializePokemonList(vector<Pokemon*>& list);
 
 int main()
 {
+	srand(time(0));
 	//creating window
 	sf::RenderWindow window(sf::VideoMode(1200,720),"MyGame");
 	window.setFramerateLimit(60);
