@@ -12,6 +12,8 @@ private:
 	std::map<std::string, Scene*> scenes;
 
 public:
+	SceneManager() {};
+	~SceneManager();
 	void AddScene(Scene *sceneToAdd);
 	void StackScene(std::string sceneName);
 	void PopScene(void);

@@ -36,9 +36,19 @@ GameManager::GameManager(Player& player, Enemy& enemy, string identifier, GameOb
 	enemyHp.SetSize(50);
 }
 
+//Clearing the pokemons allocated in the heap
+GameManager::~GameManager()
+{
+	std::vector<Pokemon*>::iterator pokemonIterator = pokemonList.begin();
+	while (pokemonIterator != pokemonList.end())
+	{
+		delete* pokemonIterator;
+		pokemonIterator++;
+	}
+}
+
 void GameManager::DecideStartingPlayer()
 {
-	//srand(time(0));
 	int decision = rand() % 2;
 	if (decision) this->player.SwitchTurn();
 	else this->enemy.SwitchTurn();

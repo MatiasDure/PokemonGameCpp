@@ -3,6 +3,16 @@
 Scene::Scene(const string identifier, const int popForce) :
 	identifier(identifier), popForce(popForce), firstRender(true) {}
 
+//Clearing the game objects allocated in the heap
+Scene::~Scene()
+{
+	std::cout << "Destroying: " << this->identifier << endl;
+	for (int i = 0; i < objectsInScene.size(); i++)
+	{
+		delete objectsInScene[i];
+	}
+}
+
 void Scene::AddObject(GameObject* objToAdd)
 {
 	this->objectsInScene.push_back(objToAdd);

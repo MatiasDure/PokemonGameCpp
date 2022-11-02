@@ -23,7 +23,7 @@ public:
 	GameObject(const GameObject& other);
 
 	//Destructor
-	~GameObject();
+	virtual ~GameObject();
 
 	void AddChild(GameObject* objToAdd);
 	void RemoveChild(GameObject& objToRemove);

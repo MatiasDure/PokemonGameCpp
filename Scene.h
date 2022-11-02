@@ -18,6 +18,7 @@ private:
 
 public: 
 	Scene(const string identifier, const int popForce);
+	~Scene();
 	void RenderScene(sf::RenderWindow& window);
 	void Update(sf::RenderWindow& window);
 	void AddObject(GameObject* objToAdd);

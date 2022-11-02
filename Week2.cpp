@@ -46,21 +46,18 @@ using namespace std;
 
 
 void CreateScenes(SceneManager& manager, sf::RenderWindow& window);
-void InitializePokemonList(vector<Pokemon*>& list);
+//void InitializePokemonList(vector<Pokemon*>& list);
 
 int main()
 {
+	//giving current system time as seed
 	srand(time(0));
+
 	//creating window
 	sf::RenderWindow window(sf::VideoMode(1200,720),"MyGame");
 	window.setFramerateLimit(60);
 
-	//initializing pokemon list from text file
-	//vector<Pokemon*> pokemonList;
-	//InitializePokemonList(pokemonList);
-
 	SceneManager sceneManager;
-	//CreateScenes(sceneManager, pokemonList, window);
 	CreateScenes(sceneManager, window);
 	//fps
 	//float fps;
@@ -74,21 +71,6 @@ int main()
 	//	cout << *pokemonList[i];
 	//}
 
-	//decide which scene to use
-	//int currentSceneIndex = 0;
-	//Scene currentScene = DecideScene(0, pokemonList);
-	 
-	//cout << currentScene.AmountObjectsInScene();
-	
-	//sf::Text text;
-	//sf::Font font;
-	//font.loadFromFile("font.ttf");
-	//text.setString("Hello");
-	//text.setFont(font);
-	//text.setFillColor(sf::Color::Cyan);
-	//text.setPosition(200, 300);
-	//text.setCharacterSize(500);
-
 	//running game loop
 	while (window.isOpen())
 	{
@@ -98,11 +80,8 @@ int main()
 			if (event.type == sf::Event::Closed) window.close();
 			sceneManager.HandleEvent(event, window);
 		}
-		window.clear(sf::Color::Transparent);
 		sceneManager.RenderScene(window);
 		sceneManager.Update(window);
-		//window.draw(text);
-		//window.display();
 		//Printing fps
 		//currentTime = clock.getElapsedTime();
 		//fps = 1.0f / (currentTime.asSeconds() - previousTime.asSeconds()); // the asSeconds returns a float
@@ -113,26 +92,26 @@ int main()
 	return 0;
 }
 
-void InitializePokemonList(vector<Pokemon*>& list)
-{
-	string line;
-	ifstream myFile("pokemons.txt");
-	while (getline(myFile, line))
-	{
-		string name;
-		int power, hp, stamina;
-
-		//Creating a stream from the current line in the file
-		stringstream lineStream(line);
-
-		//pushing the values to the variables respectively
-		lineStream >> name >> power >> hp >> stamina;
-
-		//allocating memory in heap for each pokemon
-		list.push_back(new Pokemon(name,power,hp,stamina,name,name+".png"));
-	}
-	myFile.close();
-}
+//void InitializePokemonList(vector<Pokemon*>& list)
+//{
+//	string line;
+//	ifstream myFile("pokemons.txt");
+//	while (getline(myFile, line))
+//	{
+//		string name;
+//		int power, hp, stamina;
+//
+//		//Creating a stream from the current line in the file
+//		stringstream lineStream(line);
+//
+//		//pushing the values to the variables respectively
+//		lineStream >> name >> power >> hp >> stamina;
+//
+//		//allocating memory in heap for each pokemon
+//		list.push_back(new Pokemon(name,power,hp,stamina,name,name+".png"));
+//	}
+//	myFile.close();
+//}
 
 void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
 {
@@ -213,9 +192,9 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
 	Button* attack = new Button("Attack", "attack.png");
 	attack->SetBehavior([player, game]() {
 		if (!player->GetTurn()) return;
-		cout << player->GetTarget()->GetPokemon()->GetHP() << endl;
+		std::cout << player->GetTarget()->GetPokemon()->GetHP() << endl;
 		player->Attack(*player->GetTarget());
-		cout << player->GetTarget()->GetPokemon()->GetHP() << endl;
+		std::cout << player->GetTarget()->GetPokemon()->GetHP() << endl;
 		game->SwitchTurns();
 		});
 	attack->SetPosition(1140, 280);
@@ -236,9 +215,9 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
 	heal->SetBehavior([player, game]() {
 		if (!player->GetTurn()) return;
 		//cout << enemy->GetPokemon()->GetHP() << endl;
-		cout << player->GetPokemon()->GetHP() << endl;
+		std::cout << player->GetPokemon()->GetHP() << endl;
 		player->Heal(30);
-		cout << player->GetPokemon()->GetHP() << endl;
+		std::cout << player->GetPokemon()->GetHP() << endl;
 		//cout << enemy->GetPokemon()->GetHP() << endl;
 		game->SwitchTurns();
 		});

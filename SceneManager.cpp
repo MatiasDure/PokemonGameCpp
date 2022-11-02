@@ -1,5 +1,16 @@
 #include "SceneManager.h"
 
+//Clearing the scenes allocated in the heap
+SceneManager::~SceneManager()
+{
+	std::map<std::string, Scene*>::iterator scenesIterator = scenes.begin();
+	while (scenesIterator != scenes.end())
+	{
+		delete (*scenesIterator).second;
+		scenesIterator++;
+	}
+}
+
 void SceneManager::AddScene(Scene* sceneToAdd)
 {
 	std::string sceneName = sceneToAdd->GetIdentifier();

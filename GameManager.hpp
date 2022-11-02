@@ -21,17 +21,18 @@ private:
 	string turnText, playerHpText, enemyHpText;
 	sf::Font font;
 	vector<Pokemon*> pokemonList;
+	void DecideStartingPlayer(); 
+	void InitializePokemonList();
 	
 public:
 	GameManager(Player& player, Enemy& enemy, string identifier, GameObject* parent = NULL);
-	void DecideStartingPlayer();
+	~GameManager() override;
+	void SetHighScores();
+	void ReadHighScores();
 	void SwitchTurns();
 	void ResetGame();
 	void NextLevel();
 	void UpdateText(TextObject& textObj, string text);
-	void SetHighScores();
-	void ReadHighScores();
-	void InitializePokemonList();
 	void Update(sf::RenderWindow& window) override;
 	void RenderGameObject(sf::RenderWindow& window) override;
 };
