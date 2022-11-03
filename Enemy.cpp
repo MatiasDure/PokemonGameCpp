@@ -8,19 +8,9 @@ Enemy::Enemy(string identifier, string fileName, PokemonTrainer* target, GameObj
 
 void Enemy::DecideAction()
 {
-	//srand(time(0));
+	if (!active) return;
 	int randomChoice = rand() % 11; // range 0 - 10
 	if (randomChoice >= 8) this->Heal(50);
 	else if (randomChoice >= 3) this->Attack(*target);
 	else this->Skip();
 }
-
-//void Enemy::AiUpdate()
-//{
-//	if (reactionTimer <= 0)
-//	{
-//		this->DecideAction();
-//		reactionTimer = TWO_SECONDS;
-//	}
-//	else reactionTimer--;
-//}

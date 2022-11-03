@@ -1,15 +1,16 @@
 #include "Button.hpp"
 
 Button::Button(string identifier, string fileName, GameObject* parent)
-	: SpriteObject(identifier, fileName, parent) {}
+	: SpriteObject(identifier, fileName, parent), mouseHover(false) {}
 
 void Button::HandleEvent(sf::Event& event, sf::RenderWindow& window)
 {
+	if (!active) return;
 	if (mouseHover && event.type == sf::Event::MouseButtonPressed)
 	{
 		try
 		{
-			behavior();//window.close();
+			behavior();
 		}
 		catch(exception e) {
 			std::cout<< "No function passed to button!" << endl;
@@ -19,6 +20,7 @@ void Button::HandleEvent(sf::Event& event, sf::RenderWindow& window)
 
 void Button::Update(sf::RenderWindow& window)
 {
+	if (!active) return;
 	sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 	if (spriteBoundary.contains(mousePos.x, mousePos.y))
 	{

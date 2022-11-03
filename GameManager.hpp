@@ -1,38 +1,28 @@
 #pragma once
 #include <fstream>
 #include <sstream>
-#include "Player.hpp"
-#include "Enemy.hpp"
-#include "Pokemon.hpp"
-#include "TextObject.hpp"
-#include <Windows.h>
+#include <iostream>
 
-class GameManager: public GameObject
+class GameManager
 {
 private:
-	bool win, lose;
-	int highscores[5];
-	int score;
-	int seed;
-	int enemyTimer;
-	Player& player;
-	Enemy& enemy;
-	TextObject turn, playerHp, enemyHp;
-	string turnText, playerHpText, enemyHpText;
-	sf::Font font;
-	vector<Pokemon*> pokemonList;
-	void DecideStartingPlayer(); 
-	void InitializePokemonList();
+	static GameManager* Manager;
+	unsigned int highscores[5];
+	unsigned int currentScore;
+	GameManager();
 	
 public:
-	GameManager(Player& player, Enemy& enemy, string identifier, GameObject* parent = NULL);
-	~GameManager() override;
+	static GameManager* GetInstance();
 	void SetHighScores();
 	void ReadHighScores();
-	void SwitchTurns();
 	void ResetGame();
 	void NextLevel();
-	void UpdateText(TextObject& textObj, string text);
-	void Update(sf::RenderWindow& window) override;
-	void RenderGameObject(sf::RenderWindow& window) override;
+	
+	//getting rid of the copy and assign operators
+	GameManager(const GameManager& manager) = delete;
+	GameManager operator=(const GameManager& manager) = delete;
 };
+
+//GameManager* GameManager::Manager = 0;
+
+

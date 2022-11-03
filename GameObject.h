@@ -16,6 +16,7 @@ private:
 protected:
 	sf::Vector2f position;
 	vector<GameObject*> children;
+	bool active;
 
 public:
 	//Constructors
@@ -31,13 +32,16 @@ public:
 	void RemoveParent(void);
 
 	virtual void HandleEvent(sf::Event& event, sf::RenderWindow& window) {};
+	virtual void RenderGameObject(sf::RenderWindow& window) {};
+	virtual void Update(sf::RenderWindow& window);
 	virtual void MoveObj(const sf::Vector2f vec);
 	virtual void MoveObj(const float x, const float y);
 	virtual void SetPosition(const float x, const float y);
 	virtual void SetScale(const float x, const float y) {};
-	bool HasParent(void) const;
 
-	virtual void RenderGameObject(sf::RenderWindow& window) {};
+
+	bool HasParent(void) const;
+	void SetActive(bool activate);
 
 	//Getters
 	string GetIdentifier(void) const;
@@ -47,5 +51,4 @@ public:
 	//overloading comparison operator
 	bool operator == (const GameObject& other) const;
 	
-	virtual void Update(sf::RenderWindow& window);
 };

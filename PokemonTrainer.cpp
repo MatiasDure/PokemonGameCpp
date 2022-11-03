@@ -6,6 +6,7 @@ PokemonTrainer::PokemonTrainer(string identifier, string fileName, PokemonTraine
 
 void PokemonTrainer::RenderGameObject(sf::RenderWindow& window)
 {
+	if (!active) return;
 	SpriteObject::RenderGameObject(window);
 	if(poke != NULL) poke->RenderGameObject(window);
 }
@@ -34,9 +35,7 @@ void PokemonTrainer::TakeDamage(const int damage)
 
 void PokemonTrainer::Attack(PokemonTrainer& otherTrainer)
 {
-	//srand(time(0));
 	int randomNum = rand() % 80 - 40; //num between -40 and 79 
-	//cout << "damage to other: " + to_string(poke->GetPower() + randomNum) << endl;
 	otherTrainer.TakeDamage(poke->GetPower() + randomNum);
 }
 

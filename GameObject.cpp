@@ -2,7 +2,8 @@
 
 GameObject::GameObject(string identifier, GameObject* parent) :
 	identifier(identifier),
-	parent(parent) 
+	parent(parent),
+	active(true)
 {
 	position.x = 0;
 	position.y = 0;
@@ -89,6 +90,11 @@ GameObject* GameObject::GetParent() const
 sf::Vector2f GameObject::GetPosition() const
 {
 	return this->position;
+}
+
+void GameObject::SetActive(bool activate)
+{
+	active = activate;
 }
 
 string GameObject::GetIdentifier() const

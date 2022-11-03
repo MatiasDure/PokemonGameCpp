@@ -1,2 +1,39 @@
-﻿  GameManager.cpp
+﻿  BattleControl.cpp
+  Button.cpp
+C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\Button.cpp(25,50): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\Button.cpp(25,38): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+  Enemy.cpp
+  FightManager.cpp
+C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\FightManager.cpp(9,40): warning C4305: 'argument': truncation from 'double' to 'const float'
+  GameObject.cpp
+  Player.cpp
+  Pokemon.cpp
+  PokemonPicker.cpp
+C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\PokemonPicker.cpp(6,16): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  PokemonTrainer.cpp
+  Scene.cpp
+C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\Scene.cpp(80,36): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  SceneManager.cpp
+  SpriteObject.cpp
+  TextObject.cpp
+  Week2.cpp
+C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\Week2.cpp(24,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Generating Code...
+C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\GameObject.cpp(88): warning C4715: 'GameObject::GetParent': not all control paths return a value
   Week2.vcxproj -> C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\x64\Debug\Week2.exe

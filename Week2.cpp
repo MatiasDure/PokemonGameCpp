@@ -12,41 +12,11 @@
 #include "SceneManager.h"
 #include "GameManager.hpp"
 #include "TextObject.hpp"
+#include "FightManager.h"
 
 using namespace std;
 
-//Scene DecideScene(const int currentIndex, const vector<Pokemon*>& pokemonList)
-//{
-//	const int i = 0;
-//	Scene scene("Scene"+currentIndex , i);
-//	switch (currentIndex)
-//	{
-//		case 0:
-//		{
-//			scene.AddObject(new SpriteObject("background", sf::Vector2f(0, 0), "background.jpg"));
-//			scene.AddObject(new Player("Player", sf::Vector2f(30, 5), "player.png", pokemonList, 5));
-//			scene.AddObject(new Enemy("Enemy", sf::Vector2f(330, 5), "enemy.png", pokemonList,6));
-//			break;
-//		}
-//		case 1:
-//		{
-//			GameObject ob("hey", sf::Vector2f(0, 0));
-//			scene.AddObject(&ob);
-//			scene.AddObject(&ob);
-//			scene.AddObject(&ob);
-//			break;
-//		}
-//		case 2:
-//			break;
-//		default:
-//			break;
-//	}
-//	return scene;
-//}
-
-
 void CreateScenes(SceneManager& manager, sf::RenderWindow& window);
-//void InitializePokemonList(vector<Pokemon*>& list);
 
 int main()
 {
@@ -64,12 +34,6 @@ int main()
 	//sf::Clock clock = sf::Clock::Clock();
 	//sf::Time previousTime = clock.getElapsedTime();
 	//sf::Time currentTime;
-
-	//printing pokemon list
-	//for (int i = 0; i < pokemonList.size();i++)
-	//{
-	//	cout << *pokemonList[i];
-	//}
 
 	//running game loop
 	while (window.isOpen())
@@ -91,27 +55,6 @@ int main()
 
 	return 0;
 }
-
-//void InitializePokemonList(vector<Pokemon*>& list)
-//{
-//	string line;
-//	ifstream myFile("pokemons.txt");
-//	while (getline(myFile, line))
-//	{
-//		string name;
-//		int power, hp, stamina;
-//
-//		//Creating a stream from the current line in the file
-//		stringstream lineStream(line);
-//
-//		//pushing the values to the variables respectively
-//		lineStream >> name >> power >> hp >> stamina;
-//
-//		//allocating memory in heap for each pokemon
-//		list.push_back(new Pokemon(name,power,hp,stamina,name,name+".png"));
-//	}
-//	myFile.close();
-//}
 
 void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
 {
@@ -135,7 +78,7 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
 			//Creating a new empty leaderboard
 			for (int i = 1; i < 6; i++)
 			{
-				myFile << i << ".\n";
+				myFile << 0 << "\n";
 			}
 			myFile.close();
 		}
@@ -176,7 +119,7 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
 	player->SetTarget(enemy);
 
 	//Game manager
-	GameManager* game = new GameManager(*player, *enemy, "Game");
+	FightManager* game = new FightManager(*player, *enemy, "Game");
 	
 	//buttons
 	//Switching back to main menu
@@ -191,7 +134,7 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
 	//attack button for player
 	Button* attack = new Button("Attack", "attack.png");
 	attack->SetBehavior([player, game]() {
-		if (!player->GetTurn()) return;
+		if (!player->GetTurn() || game->gameLost() || game->gameWon()) return;
 		std::cout << player->GetTarget()->GetPokemon()->GetHP() << endl;
 		player->Attack(*player->GetTarget());
 		std::cout << player->GetTarget()->GetPokemon()->GetHP() << endl;
@@ -200,20 +143,10 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
 	attack->SetPosition(1140, 280);
 	attack->SetScale(0.6f, 0.6f);
 
-	//attack button for enemy (Testing out enemy attack)
-	//Button* eAttack = new Button("Attack", "start.png");
-	//eAttack->SetBehavior([enemy, game]() {
-	//	if (!enemy->GetTurn()) return;
-	//	enemy->Attack(enemy->GetTarget());
-	//	game->SwitchTurns();
-	//	});
-	//eAttack->SetPosition(1140, 580);
-	//eAttack->SetScale(0.6f, 0.6f);
-
 	//Heal button for player
 	Button* heal = new Button("Heal", "heal.png");
 	heal->SetBehavior([player, game]() {
-		if (!player->GetTurn()) return;
+		if (!player->GetTurn() || game->gameLost() || game->gameWon()) return;
 		//cout << enemy->GetPokemon()->GetHP() << endl;
 		std::cout << player->GetPokemon()->GetHP() << endl;
 		player->Heal(30);
@@ -227,11 +160,19 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
 	//skip button for player
 	Button* skip = new Button("Skip", "skip.png");
 	skip->SetBehavior([player, game]() {
-		if (!player->GetTurn()) return;
+		if (!player->GetTurn() || game->gameLost() || game->gameWon()) return;
 		game->SwitchTurns();
 		});
 	skip->SetPosition(1140, 480);
 	skip->SetScale(0.6f, 0.6f);
+
+	//Button* continueButton = new Button("Continue", "start.png");
+	//skip->SetBehavior([game]() {
+	//	if (!game->gameWon()) return;
+	//		
+	//	});
+	//skip->SetPosition(640, 480);
+	//skip->SetScale(0.6f, 0.6f);
 
 	//Adding objects to the scene
 	scene2->AddObject(background);
@@ -240,7 +181,6 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
 	scene2->AddObject(enemy);
 	scene2->AddObject(back);
 	scene2->AddObject(attack);
-	//scene2->AddObject(eAttack);
 	scene2->AddObject(heal);
 	scene2->AddObject(skip);
 

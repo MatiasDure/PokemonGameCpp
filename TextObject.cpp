@@ -38,6 +38,7 @@ void TextObject::SetSize(const int x)
 
 void TextObject::RenderGameObject(sf::RenderWindow& window)
 {
+	if (!active) return;
 	window.draw(this->textObj);
 }
 

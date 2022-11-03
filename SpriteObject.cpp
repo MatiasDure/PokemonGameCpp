@@ -1,7 +1,7 @@
 #include "SpriteObject.hpp"
 
 SpriteObject::SpriteObject(string identifier, string fileName, GameObject* parent) 
-	: GameObject(identifier, parent)
+	: GameObject(identifier, parent), originX(0), originY(0), scaleX(1), scaleY(1)
 {
 	if (!this->texture.loadFromFile(fileName))
 	{
@@ -14,12 +14,11 @@ SpriteObject::SpriteObject(string identifier, string fileName, GameObject* paren
 	this->sprite.setPosition(position);
 	//To get the properties of the rectangle containing the image
 	spriteBoundary = this->sprite.getGlobalBounds();
-	SetOriginXY(0, 0);
-	SetScale(1, 1);
 }
 
 void SpriteObject::RenderGameObject(sf::RenderWindow& window)
 {
+	if (!active) return;
 	window.draw(this->sprite);
 }
 
@@ -82,6 +81,11 @@ void SpriteObject::ScaleByMultiplier(const float x, const float y)
 string SpriteObject::GetFileName(void) const
 {
 	return this->fileName;
+}
+
+sf::Sprite SpriteObject::GetSpriteObj(void) const
+{
+	return this->sprite;
 }
 
 float SpriteObject::GetWidth(void) const

@@ -25,8 +25,11 @@ public:
 	void SetOriginXY(const float x, const float y);
 	void SetScale(const float x, const float y) override;
 	void ScaleByMultiplier(const float x, const float y);
+	void UpdateBoundary();
+	
+	//getters
 	float GetWidth(void)const;
 	float GetHeight(void)const;
-	void UpdateBoundary();
-	string GetFileName(void) const;
+	string GetFileName(void)const;
+	sf::Sprite GetSpriteObj(void)const;
 };
