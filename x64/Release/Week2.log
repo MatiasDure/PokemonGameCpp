@@ -1,1 +1,8 @@
-﻿  Week2.vcxproj -> C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week2\exercises\secondWeekExercise\Week2\x64\Release\Week2.exe
+﻿  FightManager.cpp
+C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\FightManager.cpp(13,40): warning C4305: 'argument': truncation from 'double' to 'const float'
+  Generating code
+  10 of 935 functions ( 1.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    8 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  Week2.vcxproj -> C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\x64\Release\Week2.exe

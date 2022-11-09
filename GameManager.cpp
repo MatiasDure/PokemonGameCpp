@@ -53,6 +53,7 @@ void GameManager::Update(sf::RenderWindow& window)
 //Updating highscore and file with new score
 void GameManager::SetHighScores(int scoreToPlace, int indexToPlace )
 {
+	if (indexToPlace > lengthIndexHighScores) return;
 	for (int i = lengthIndexHighScores; i > indexToPlace - 1; i--)
 	{
 		if (i != lengthIndexHighScores) highscores[i + 1] = highscores[i];

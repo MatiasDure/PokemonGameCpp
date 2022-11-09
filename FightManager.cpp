@@ -5,7 +5,7 @@
 FightManager::FightManager(Player& player, Enemy& enemy, string identifier, GameObject* parent) :
 	GameObject(identifier, parent),
 	player(player), enemy(enemy), score(0), seed(0), win(false), lose(false), TWO_SECONDS(120), lengthOfHighScores(4),
-	turn("Turn"), playerHp("PlayerHP"), enemyHp("EnemyHP"), continueButton("ContinueButton", "buttonImgs/continue.png")
+	turn("Turn"), playerHp("PlayerHP"), enemyHp("EnemyHP"), continueButton("ContinueButton", "buttonImgs/continue.png"), testingVersion(true)
 {
 	
 	//Setting continue button
@@ -207,7 +207,8 @@ void FightManager::ResetGame(bool backToMainMenu)
 	if (backToMainMenu)
 	{
 		//Create function to compare the score gotten this turn with highscore, and update it if necessary
-		if (this->gameManager) this->gameManager->SetHighScores(this->score, this->gameManager->CompareHighScores(score, lengthOfHighScores));
+		int indexToPlace = this->gameManager->CompareHighScores(score, lengthOfHighScores);
+		if (this->gameManager) this->gameManager->SetHighScores(this->score, indexToPlace);
 		else printf("Game Manager not found in FightManager object!\n");
 		score = 0;
 	}
@@ -225,16 +226,17 @@ void FightManager::InitializePokemonList()
 	while (getline(myFile, line))
 	{
 		string name;
-		int power, hp, stamina;
+		int power, hp, hpTesting;
 
 		//Creating a stream from the current line in the file
 		stringstream lineStream(line);
 
 		//pushing the values to the variables respectively
-		lineStream >> name >> power >> hp;
+		lineStream >> name >> power >> hpTesting >> hp;
 
 		//allocating memory in heap for each pokemon
-		this->pokemonList.push_back(new Pokemon(name, power, hp, name, "pokemonImgs/" + name + ".png"));
+		if(testingVersion) this->pokemonList.push_back(new Pokemon(name, power, hpTesting, name, "pokemonImgs/" + name + ".png"));
+		else this->pokemonList.push_back(new Pokemon(name, power, hp, name, "pokemonImgs/" + name + ".png"));
 	}
 	myFile.close();
 }

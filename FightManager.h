@@ -9,6 +9,7 @@
 class FightManager: public GameObject
 {
 private:
+	bool testingVersion;
 	bool win, lose, increasedPoint;
 	int highscores[5];
 	int lengthOfHighScores;
