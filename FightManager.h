@@ -16,10 +16,11 @@ private:
 	int seed;
 	const int TWO_SECONDS;
 	int enemyTimer;
-	class Player& player;
-	class Enemy& enemy;
-	class TextObject turn, playerHp, enemyHp;
-	class Button continueButton;
+	class GameManager* gameManager;
+	Player& player;
+	Enemy& enemy;
+	TextObject turn, playerHp, enemyHp;
+	Button continueButton;
 	string turnText, playerHpText, enemyHpText;
 	sf::Font font;
 	vector<class Pokemon*> pokemonList;
@@ -30,9 +31,9 @@ private:
 public:
 	FightManager(Player& player, Enemy& enemy, string identifier, GameObject* parent = NULL);
 	~FightManager() override;
-	void SetHighScores(int indexToPlace);
+	/*void SetHighScores(int indexToPlace);
 	int CompareHighScores(int score, int index);
-	void ReadHighScores(void);
+	void ReadHighScores(void);*/
 	void SwitchTurns(void);
 	void ResetGame(bool backToMainMenu);
 	void NextLevel(void);
@@ -41,6 +42,7 @@ public:
 	void RenderGameObject(sf::RenderWindow& window) override;
 	void HandleEvent(sf::Event& event, sf::RenderWindow& window)override;
 	void MovePokesIntoPos();
+	void SetGameManager(GameManager* gameManager);
 
 	//getters
 	bool gameWon(void)const;

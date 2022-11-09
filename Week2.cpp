@@ -16,7 +16,7 @@
 
 using namespace std;
 
-void CreateScenes(SceneManager& manager, sf::RenderWindow& window);
+void CreateScenes(SceneManager& manager, sf::RenderWindow& window, GameManager& gameManager);
 
 int main()
 {
@@ -27,8 +27,9 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(1200,720),"MyCppGame!", sf::Style::Default);
 	window.setFramerateLimit(60);
 	
+	GameManager gameManager;
 	SceneManager sceneManager;
-	CreateScenes(sceneManager, window);
+	CreateScenes(sceneManager, window, gameManager);
 	//fps
 	//float fps;
 	//sf::Clock clock = sf::Clock::Clock();
@@ -56,7 +57,7 @@ int main()
 	return 0;
 }
 
-void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
+void CreateScenes(SceneManager& manager, sf::RenderWindow& window, GameManager& gameManager)
 {
 
 	sf::Vector2u windowSize = window.getSize();
@@ -65,6 +66,7 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
 	Scene* mainMenuScene = new Scene("MainMenu", 0);
 
 	int yOffsetMainMenu = 150;
+
 	//Buttons
 	//Switching to the fighting scene
 	Button* start = new Button("Start", "start.png");
@@ -73,20 +75,26 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
 		});
 	start->SetPosition(windowSize.x/2, windowSize.y/5 + yOffsetMainMenu);
 
+	Button* scores = new Button("Scores", "scores.png");
+	scores->SetBehavior([&gameManager]() {
+		gameManager.ReadHighScores();
+		});
+
 	//Resetting highscore file
 	Button* erase = new Button("Erase", "clearData.png");
-	erase->SetBehavior([]() {
-		ofstream myFile("highscores.txt", ios::trunc);
-		if (myFile.is_open())
-		{
-			//Creating a new empty leaderboard
-			for (int i = 1; i < 6; i++)
-			{
-				myFile << 0 << "\n";
-			}
-			myFile.close();
-		}
-		else printf("Not able to open file\n");
+	erase->SetBehavior([&gameManager]() {
+		//ofstream myFile("highscores.txt", ios::trunc);
+		//if (myFile.is_open())
+		//{
+		//	//Creating a new empty leaderboard
+		//	for (int i = 1; i < 6; i++)
+		//	{
+		//		myFile << 0 << "\n";
+		//	}
+		//	myFile.close();
+		//}
+		//else printf("Not able to open file\n");
+		gameManager.ClearHighScores();
 		});
 	erase->SetPosition(windowSize.x / 2, windowSize.y / 5 + yOffsetMainMenu * 2);
 
@@ -128,15 +136,14 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
 
 	//Game manager
 	FightManager* game = new FightManager(*player, *enemy, "Game");
+	game->SetGameManager(&gameManager);
 	
 	//buttons
 	//attack button for player
 	Button* attack = new Button("Attack", "attack.png");
 	attack->SetBehavior([player, game]() {
 		if (!player->GetTurn() || game->gameLost() || game->gameWon()) return;
-		std::cout << player->GetTarget()->GetPokemon()->GetHP() << endl;
 		player->Attack(*player->GetTarget());
-		std::cout << player->GetTarget()->GetPokemon()->GetHP() << endl;
 		game->SwitchTurns();
 		});
 	attack->SetPosition(windowSize.x / 2 + xOffsetFight, 580);
@@ -146,11 +153,8 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
 	Button* heal = new Button("Heal", "heal.png");
 	heal->SetBehavior([player, game]() {
 		if (!player->GetTurn() || game->gameLost() || game->gameWon()) return;
-		//cout << enemy->GetPokemon()->GetHP() << endl;
-		std::cout << player->GetPokemon()->GetHP() << endl;
-		player->Heal(30);
-		std::cout << player->GetPokemon()->GetHP() << endl;
-		//cout << enemy->GetPokemon()->GetHP() << endl;
+		int amountHeal = 30;
+		player->Heal(amountHeal);
 		game->SwitchTurns();
 		});
 	heal->SetPosition(windowSize.x / 2 + xOffsetFight + 250, 580);

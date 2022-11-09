@@ -8,6 +8,6 @@ void Enemy::DecideAction()
 	CheckActive(active);
 	int randomChoice = rand() % 11; // range 0 - 10
 	if (randomChoice >= 8) this->Heal(50);
-	else if (randomChoice >= 3) this->Attack(*target);
+	else if (randomChoice >= 2) this->Attack(*target);
 	else this->Skip();
 }

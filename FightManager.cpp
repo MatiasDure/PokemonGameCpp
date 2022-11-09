@@ -5,11 +5,11 @@
 FightManager::FightManager(Player& player, Enemy& enemy, string identifier, GameObject* parent) :
 	GameObject(identifier, parent),
 	player(player), enemy(enemy), score(0), seed(0), win(false), lose(false), TWO_SECONDS(120), lengthOfHighScores(4),
-	turn("Turn"), playerHp("PlayerHP"), enemyHp("EnemyHP"), continueButton("Continue", "start.png")
+	turn("Turn"), playerHp("PlayerHP"), enemyHp("EnemyHP"), continueButton("Continue", "continue.png")
 {
 	
 	//Setting continue button
-	this->continueButton.SetPosition(600,400);
+	this->continueButton.SetPosition(550,200);
 	this->continueButton.SetScale(0.6, 0.6);
 	this->continueButton.SetActive(false);
 	this->continueButton.SetBehavior([this]() {
@@ -150,6 +150,11 @@ void FightManager::MovePokesIntoPos()
 	this->enemy.GetPokemon()->SetPosition(-200 + enemyPos.x, 220 + enemyPos.y);
 }
 
+void FightManager::SetGameManager(GameManager* gameManager)
+{
+	this->gameManager = gameManager;
+}
+
 bool FightManager::gameWon(void) const
 {
 	return this->win;
@@ -196,9 +201,10 @@ void FightManager::ResetGame(bool backToMainMenu)
 
 	if (backToMainMenu)
 	{
-		cout << score << "!!!!!!!!!!!!!" << endl;
+		cout << "Score this round: " << score << "!" << endl;
 		//Create function to compare the score gotten this turn with highscore, and update it if necessary
-		SetHighScores(CompareHighScores(score, lengthOfHighScores));
+		if (this->gameManager) this->gameManager->SetHighScores(this->score, this->gameManager->CompareHighScores(score, lengthOfHighScores));
+		else printf("Game Manager not found in FightManager object!");
 		score = 0;
 	}
 }
@@ -212,33 +218,33 @@ void FightManager::UpdateText(TextObject& textObj, const string text)
 	textObj.SetText(text);
 }
 
-void FightManager::SetHighScores(int indexToPlace)
-{
-	for (int i = lengthOfHighScores; i > indexToPlace - 1; i--)
-	{
-		if(i != lengthOfHighScores) highscores[i + 1] = highscores[i];
-		highscores[i] = score;
-	}
-}
+//void FightManager::SetHighScores(int indexToPlace)
+//{
+//	for (int i = lengthOfHighScores; i > indexToPlace - 1; i--)
+//	{
+//		if(i != lengthOfHighScores) highscores[i + 1] = highscores[i];
+//		highscores[i] = score;
+//	}
+//}
 
-int FightManager::CompareHighScores(int score, int index)
-{
-	if (index < 0) return 0;
-	if (score > highscores[index]) CompareHighScores(score, index - 1);
-	else return index - 1;
-}
+//int FightManager::CompareHighScores(int score, int index)
+//{
+//	if (index < 0) return 0;
+//	if (score > highscores[index]) CompareHighScores(score, index - 1);
+//	else return index - 1;
+//}
 
-void FightManager::ReadHighScores()
-{
-	string line;
-	ifstream myFile("highscores.txt");
-	int i = 0;
-	while (getline(myFile, line) && i < 5)
-	{
-		stringstream lineStream(line);
-		lineStream >> this->highscores[i++];
-	}
-}
+//void FightManager::ReadHighScores()
+//{
+//	string line;
+//	ifstream myFile("highscores.txt");
+//	int i = 0;
+//	while (getline(myFile, line) && i < 5)
+//	{
+//		stringstream lineStream(line);
+//		lineStream >> this->highscores[i++];
+//	}
+//}
 
 void FightManager::InitializePokemonList()
 {

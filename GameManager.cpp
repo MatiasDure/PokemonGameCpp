@@ -2,49 +2,66 @@
 
 GameManager::GameManager()
 {
+	lengthIndexHighScores = 4;
+	ReadHighScores();
 }
 
-GameManager* GameManager::GetInstance()
+void GameManager::SetHighScores(int scoreToPlace, int indexToPlace )
 {
-	static GameManager* Manager;
-	return Manager;
-}
-
-void GameManager::SetHighScores()
-{
-	//setting highscores
-	unsigned int score = 0;
-	for (unsigned short i = 4; i >= 0; i--)
+	cout << "index to place: " << indexToPlace << endl;
+	for (int i = lengthIndexHighScores; i > indexToPlace - 1; i--)
 	{
-		unsigned int currentS = highscores[i];
-		if (currentS != 0)
-		{
-			if (currentS < score)
-			{
-				highscores[i+1] = currentScore;
-				highscores[i] = score;
-			}
-		}
+		if (i != lengthIndexHighScores) highscores[i + 1] = highscores[i];
+		highscores[i] = scoreToPlace;
 	}
+
+	ofstream myFile("highscores.txt", ios::trunc);
+
+	if (myFile.is_open())
+	{
+		//Setting highscores
+		for (int i = 0; i < lengthIndexHighScores + 1; i++)
+		{
+			myFile << highscores[i] << "\n";
+		}
+		myFile.close();
+	}
+	else printf("Not able to open file\n");
 }
 
-void GameManager::ReadHighScores()
+//recursive method to compare new score with scores in highscore list
+int GameManager::CompareHighScores(int score, int index)
 {
-	std::string line;
-	std::ifstream myFile("highscores.txt");
+	if (index < 0) return 0;
+	if (score > highscores[index]) CompareHighScores(score, index - 1);
+	else return index + 1;
+}
+
+void GameManager::ReadHighScores(void)
+{
+	string line;
+	ifstream myFile("highscores.txt");
 	int i = 0;
 	while (getline(myFile, line) && i < 5)
 	{
-		std::stringstream lineStream(line);
+		stringstream lineStream(line);
 		lineStream >> this->highscores[i++];
 	}
 }
 
-void GameManager::ResetGame()
+void GameManager::ClearHighScores(void)
 {
-	printf("This was called!!!");
-}
-
-void GameManager::NextLevel()
-{
+	ofstream myFile("highscores.txt", ios::trunc);
+	if (myFile.is_open())
+	{
+		//Creating a new empty leaderboard and resetting highscores
+		for (int i = 0; i < 5; i++)
+		{
+			myFile << 0 << "\n";
+			highscores[i] = 0;
+			printf("%d: %d\n",i+1, highscores[i]);
+		}
+		myFile.close();
+	}
+	else printf("Not able to open file\n");
 }

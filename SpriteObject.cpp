@@ -43,7 +43,6 @@ void SpriteObject::MoveObj(const float x, const float y)
 	this->UpdateBoundary();
 	for (int i = 0; i < children.size(); i++)
 	{
-		cout << "are there any children?" << endl;
 		children[i]->MoveObj(x, y);
 	}
 }
