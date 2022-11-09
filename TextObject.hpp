@@ -19,5 +19,6 @@ public:
 	void RenderGameObject(sf::RenderWindow& window) override;
 
 	sf::Text GetTextObject(void) const;
+	sf::FloatRect GetTextBounds(void);
 };
 

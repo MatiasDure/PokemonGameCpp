@@ -11,6 +11,7 @@ class FightManager: public GameObject
 private:
 	bool win, lose, increasedPoint;
 	int highscores[5];
+	int lengthOfHighScores;
 	int score;
 	int seed;
 	const int TWO_SECONDS;
@@ -29,7 +30,8 @@ private:
 public:
 	FightManager(Player& player, Enemy& enemy, string identifier, GameObject* parent = NULL);
 	~FightManager() override;
-	void SetHighScores(void);
+	void SetHighScores(int indexToPlace);
+	int CompareHighScores(int score, int index);
 	void ReadHighScores(void);
 	void SwitchTurns(void);
 	void ResetGame(bool backToMainMenu);
@@ -38,6 +40,7 @@ public:
 	void Update(sf::RenderWindow& window) override;
 	void RenderGameObject(sf::RenderWindow& window) override;
 	void HandleEvent(sf::Event& event, sf::RenderWindow& window)override;
+	void MovePokesIntoPos();
 
 	//getters
 	bool gameWon(void)const;

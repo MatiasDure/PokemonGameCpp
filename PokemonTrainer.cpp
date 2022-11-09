@@ -11,9 +11,15 @@ void PokemonTrainer::RenderGameObject(sf::RenderWindow& window)
 
 void PokemonTrainer::SetRandomPokemon(Pokemon* pokemon)
 {
-	if (poke != NULL) poke->SetParent(NULL);
+	//Removing any parent/child relation if exists
+	if (poke != NULL)
+	{
+		poke->SetParent(NULL);
+		RemoveChild(*poke);
+	}
 	poke = pokemon;
 	poke->SetParent(this);
+	AddChild(poke);
 }
 
 void PokemonTrainer::SetTarget(PokemonTrainer* target)

@@ -1,11 +1,14 @@
 #include "FightManager.h"
 #include "Pokemon.hpp"
+#include "GameManager.hpp"
 
 FightManager::FightManager(Player& player, Enemy& enemy, string identifier, GameObject* parent) :
 	GameObject(identifier, parent),
-	player(player), enemy(enemy), score(0), seed(0), win(false), lose(false), TWO_SECONDS(120),
+	player(player), enemy(enemy), score(0), seed(0), win(false), lose(false), TWO_SECONDS(120), lengthOfHighScores(4),
 	turn("Turn"), playerHp("PlayerHP"), enemyHp("EnemyHP"), continueButton("Continue", "start.png")
 {
+	
+	//Setting continue button
 	this->continueButton.SetPosition(600,400);
 	this->continueButton.SetScale(0.6, 0.6);
 	this->continueButton.SetActive(false);
@@ -13,35 +16,43 @@ FightManager::FightManager(Player& player, Enemy& enemy, string identifier, Game
 		this->ResetGame(false);
 		});
 
+	//Assigning pokemons to players
 	this->InitializePokemonList();
 	this->player.SetRandomPokemon(PokemonPicker::RandomPokemon(pokemonList, seed));
 	this->seed++;
 	this->enemy.SetRandomPokemon(PokemonPicker::RandomPokemon(pokemonList, seed));
 	this->seed++;
+
+	//moving trainers and their pokes into position
+	this->player.MoveObj(50, 300);
+	this->enemy.MoveObj(1050, 10);
+	this->MovePokesIntoPos();
+
+	//assigning starting player
 	this->DecideStartingPlayer();
+
+	//setting text for game
 	turnText = player.GetTurn() ? "Player's Turn" : "Enemy's Turn";
 	playerHpText = "Player's HP: " + to_string(player.GetPokemon()->GetHP());
 	enemyHpText = "Enemy's HP: " + to_string(enemy.GetPokemon()->GetHP());
-	cout << enemyHpText << endl;
-
-	//setting text for game
+	
 	turn.SetText(turnText);
 	turn.SetFont("font.ttf");
 	turn.SetColor(sf::Color::White);
-	turn.SetPosition(460, 50);
+	turn.SetPosition(400, 50);
 	turn.SetSize(50);
 
 	playerHp.SetText(playerHpText);
-	playerHp.SetFont("font.ttf");
+	playerHp.SetFont("font2.ttf");
 	playerHp.SetColor(sf::Color::Blue);
-	playerHp.SetPosition(200, 550);
-	playerHp.SetSize(50);
+	playerHp.SetPosition(50, 100);
+	playerHp.SetSize(40);
 
 	enemyHp.SetText(enemyHpText);
-	enemyHp.SetFont("font.ttf");
+	enemyHp.SetFont("font2.ttf");
 	enemyHp.SetColor(sf::Color::Red);
-	enemyHp.SetPosition(700, 550);
-	enemyHp.SetSize(50);
+	enemyHp.SetPosition(50, 50);
+	enemyHp.SetSize(40);
 	enemyTimer = TWO_SECONDS;
 }
 
@@ -65,7 +76,6 @@ void FightManager::DecideStartingPlayer()
 
 void FightManager::Update(sf::RenderWindow& window)
 {
-
 	CheckActive(active);
 	
 	//checking game status
@@ -131,6 +141,15 @@ void FightManager::HandleEvent(sf::Event& event, sf::RenderWindow& window)
 	this->continueButton.HandleEvent(event, window);
 }
 
+void FightManager::MovePokesIntoPos()
+{
+	//moving pokes into position
+	sf::Vector2f playerPos = this->player.GetPosition();
+	this->player.GetPokemon()->SetPosition(playerPos.x + 400, playerPos.y + 260);
+	sf::Vector2f enemyPos = this->enemy.GetPosition();
+	this->enemy.GetPokemon()->SetPosition(-200 + enemyPos.x, 220 + enemyPos.y);
+}
+
 bool FightManager::gameWon(void) const
 {
 	return this->win;
@@ -173,12 +192,13 @@ void FightManager::ResetGame(bool backToMainMenu)
 	this->enemy.SetRandomPokemon(PokemonPicker::RandomPokemon(pokemonList, seed));
 	this->seed++;
 
+	this->MovePokesIntoPos();
+
 	if (backToMainMenu)
 	{
 		cout << score << "!!!!!!!!!!!!!" << endl;
 		//Create function to compare the score gotten this turn with highscore, and update it if necessary
-
-
+		SetHighScores(CompareHighScores(score, lengthOfHighScores));
 		score = 0;
 	}
 }
@@ -192,8 +212,20 @@ void FightManager::UpdateText(TextObject& textObj, const string text)
 	textObj.SetText(text);
 }
 
-void FightManager::SetHighScores()
+void FightManager::SetHighScores(int indexToPlace)
 {
+	for (int i = lengthOfHighScores; i > indexToPlace - 1; i--)
+	{
+		if(i != lengthOfHighScores) highscores[i + 1] = highscores[i];
+		highscores[i] = score;
+	}
+}
+
+int FightManager::CompareHighScores(int score, int index)
+{
+	if (index < 0) return 0;
+	if (score > highscores[index]) CompareHighScores(score, index - 1);
+	else return index - 1;
 }
 
 void FightManager::ReadHighScores()

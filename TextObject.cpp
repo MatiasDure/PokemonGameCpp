@@ -46,3 +46,8 @@ sf::Text TextObject::GetTextObject(void) const
 {
 	return textObj;
 }
+
+sf::FloatRect TextObject::GetTextBounds(void)
+{
+	return textObj.getGlobalBounds();
+}

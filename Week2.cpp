@@ -24,9 +24,9 @@ int main()
 	srand(time(0));
 
 	//creating window
-	sf::RenderWindow window(sf::VideoMode(1200,720),"MyGame");
+	sf::RenderWindow window(sf::VideoMode(1200,720),"MyCppGame!", sf::Style::Default);
 	window.setFramerateLimit(60);
-
+	
 	SceneManager sceneManager;
 	CreateScenes(sceneManager, window);
 	//fps
@@ -58,16 +58,20 @@ int main()
 
 void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
 {
-	//Main menu scene
-	Scene* scene1 = new Scene("MainMenu", 0);
 
+	sf::Vector2u windowSize = window.getSize();
+
+	//Main menu scene
+	Scene* mainMenuScene = new Scene("MainMenu", 0);
+
+	int yOffsetMainMenu = 150;
 	//Buttons
 	//Switching to the fighting scene
 	Button* start = new Button("Start", "start.png");
 	start->SetBehavior([&manager]() {
 		manager.StackScene("Fight");
 		});
-	start->SetPosition(600, 300);
+	start->SetPosition(windowSize.x/2, windowSize.y/5 + yOffsetMainMenu);
 
 	//Resetting highscore file
 	Button* erase = new Button("Erase", "clearData.png");
@@ -84,34 +88,38 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
 		}
 		else printf("Not able to open file\n");
 		});
-	erase->SetPosition(600, 460);
+	erase->SetPosition(windowSize.x / 2, windowSize.y / 5 + yOffsetMainMenu * 2);
 
 	//Quit game
 	Button* quit = new Button("Quit", "quit.png");
 	quit->SetBehavior([&window]() {
 		window.close();
 		});
-	quit->SetPosition(600, 620);
+	quit->SetPosition(windowSize.x / 2, windowSize.y / 5 + yOffsetMainMenu * 3);
 
 	//Title
 	TextObject* title = new TextObject("Title");
 	title->SetText("Pokemon C++ Game");
 	title->SetColor(sf::Color::White);
 	title->SetFont("font.ttf");
-	title->SetPosition(380,50);
 	title->SetSize(80);
+	sf::FloatRect titleBounds = title->GetTextBounds();
+	title->SetPosition(windowSize.x/2 - titleBounds.width/2, windowSize.y/20);
 
 	//Adding objects to the scene
-	scene1->AddObject(start);
-	scene1->AddObject(erase);
-	scene1->AddObject(quit);
-	scene1->AddObject(title);
+	mainMenuScene->AddObject(start);
+	mainMenuScene->AddObject(erase);
+	mainMenuScene->AddObject(quit);
+	mainMenuScene->AddObject(title);
 
 	//Fight scene
-	Scene* scene2 = new Scene("Fight", 1);
+	Scene* fightScene = new Scene("Fight", 1);
+
+	int yOffsetFight = 100;
+	int xOffsetFight = 200;
 
 	//background
-	SpriteObject* background = new SpriteObject("Background", "background.jpg");
+	SpriteObject* background = new SpriteObject("Background", "fightBackground.png");
 
 	//Pokemon trainers
 	Player* player = new Player("Player", "player.png");
@@ -122,15 +130,6 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
 	FightManager* game = new FightManager(*player, *enemy, "Game");
 	
 	//buttons
-	//Switching back to main menu
-	Button* back = new Button("Back", "back.png");
-	back->SetBehavior([&manager, game]() {
-		game->ResetGame(true);
-		manager.PopScene();
-		});
-	back->SetPosition(1140, 80);
-	back->SetScale(0.6f, 0.6f);
-
 	//attack button for player
 	Button* attack = new Button("Attack", "attack.png");
 	attack->SetBehavior([player, game]() {
@@ -140,7 +139,7 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
 		std::cout << player->GetTarget()->GetPokemon()->GetHP() << endl;
 		game->SwitchTurns();
 		});
-	attack->SetPosition(1140, 280);
+	attack->SetPosition(windowSize.x / 2 + xOffsetFight, 580);
 	attack->SetScale(0.6f, 0.6f);
 
 	//Heal button for player
@@ -154,7 +153,7 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
 		//cout << enemy->GetPokemon()->GetHP() << endl;
 		game->SwitchTurns();
 		});
-	heal->SetPosition(1140, 380);
+	heal->SetPosition(windowSize.x / 2 + xOffsetFight + 250, 580);
 	heal->SetScale(0.6f, 0.6f);
 
 	//skip button for player
@@ -163,28 +162,29 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
 		if (!player->GetTurn() || game->gameLost() || game->gameWon()) return;
 		game->SwitchTurns();
 		});
-	skip->SetPosition(1140, 480);
+	skip->SetPosition(windowSize.x / 2 + xOffsetFight, 680);
 	skip->SetScale(0.6f, 0.6f);
 
-	//Button* continueButton = new Button("Continue", "start.png");
-	//skip->SetBehavior([game]() {
-	//	if (!game->gameWon()) return;
-	//		
-	//	});
-	//skip->SetPosition(640, 480);
-	//skip->SetScale(0.6f, 0.6f);
+	//Switching back to main menu
+	Button* back = new Button("Back", "back.png");
+	back->SetBehavior([&manager, game]() {
+		game->ResetGame(true);
+		manager.PopScene();
+		});
+	back->SetPosition(windowSize.x / 2 + xOffsetFight + 250, 680);
+	back->SetScale(0.6f, 0.6f);
 
-	//Adding objects to the scene
-	scene2->AddObject(background);
-	scene2->AddObject(game);
-	scene2->AddObject(player);
-	scene2->AddObject(enemy);
-	scene2->AddObject(back);
-	scene2->AddObject(attack);
-	scene2->AddObject(heal);
-	scene2->AddObject(skip);
+	//Adding objects to fight scene
+	fightScene->AddObject(background);
+	fightScene->AddObject(game);
+	fightScene->AddObject(player);
+	fightScene->AddObject(enemy);
+	fightScene->AddObject(back);
+	fightScene->AddObject(attack);
+	fightScene->AddObject(heal);
+	fightScene->AddObject(skip);
 
 	//Adding created scenes to the manager
-	manager.AddScene(scene1);
-	manager.AddScene(scene2);
+	manager.AddScene(mainMenuScene);
+	manager.AddScene(fightScene);
 }

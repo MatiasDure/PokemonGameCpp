@@ -42,6 +42,7 @@ void GameManager::ReadHighScores()
 
 void GameManager::ResetGame()
 {
+	printf("This was called!!!");
 }
 
 void GameManager::NextLevel()
