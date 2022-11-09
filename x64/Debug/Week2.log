@@ -1,6 +1,1 @@
-﻿  FightManager.cpp
-C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\FightManager.cpp(13,40): warning C4305: 'argument': truncation from 'double' to 'const float'
-  GameManager.cpp
-  Generating Code...
-C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\GameManager.cpp(83): warning C4715: 'GameManager::CompareHighScores': not all control paths return a value
-  Week2.vcxproj -> C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\x64\Debug\Week2.exe
+﻿  Week2.vcxproj -> C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\x64\Debug\Week2.exe

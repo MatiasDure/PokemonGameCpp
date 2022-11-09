@@ -208,6 +208,7 @@ void FightManager::ResetGame(bool backToMainMenu)
 	{
 		//Create function to compare the score gotten this turn with highscore, and update it if necessary
 		int indexToPlace = this->gameManager->CompareHighScores(score, lengthOfHighScores);
+		printf("index returned: %d\n", indexToPlace);
 		if (this->gameManager) this->gameManager->SetHighScores(this->score, indexToPlace);
 		else printf("Game Manager not found in FightManager object!\n");
 		score = 0;
