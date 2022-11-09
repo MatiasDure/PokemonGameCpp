@@ -25,6 +25,7 @@ public:
 	void SetOriginXY(const float x, const float y);
 	void SetScale(const float x, const float y) override;
 	void ScaleByMultiplier(const float x, const float y);
+	void SetColor(sf::Color c);
 	void UpdateBoundary();
 	
 	//getters

@@ -15,7 +15,7 @@ private:
 	int score;
 	int seed;
 	const int TWO_SECONDS;
-	int enemyTimer;
+	int enemyTimer, lostTimer;
 	class GameManager* gameManager;
 	Player& player;
 	Enemy& enemy;
@@ -31,12 +31,8 @@ private:
 public:
 	FightManager(Player& player, Enemy& enemy, string identifier, GameObject* parent = NULL);
 	~FightManager() override;
-	/*void SetHighScores(int indexToPlace);
-	int CompareHighScores(int score, int index);
-	void ReadHighScores(void);*/
 	void SwitchTurns(void);
 	void ResetGame(bool backToMainMenu);
-	void NextLevel(void);
 	void UpdateText(TextObject& textObj, const string text);
 	void Update(sf::RenderWindow& window) override;
 	void RenderGameObject(sf::RenderWindow& window) override;

@@ -6,6 +6,8 @@ Scene::Scene(const string identifier, const int popForce) :
 //Clearing the game objects allocated in the heap
 Scene::~Scene()
 {
+	//avoid deleting the game manager that was not allocated using the new keyword
+	RemoveObjectInStack("GameManager");
 	std::cout << "Destroying: " << this->identifier << endl;
 	for (int i = 0; i < objectsInScene.size(); i++)
 	{
@@ -26,6 +28,18 @@ void Scene::RemoveObject(const string identifierOfObj)
 		{
 			//freeing memory space
 			delete this->objectsInScene[i];
+			this->objectsInScene.erase(objectsInScene.begin() + i);
+			break;
+		}
+	}
+}
+
+void Scene::RemoveObjectInStack(const string identifierOfObj)
+{
+	for (int i = 0; i < this->objectsInScene.size(); i++)
+	{
+		if (this->objectsInScene[i]->GetIdentifier() == identifierOfObj)
+		{
 			this->objectsInScene.erase(objectsInScene.begin() + i);
 			break;
 		}

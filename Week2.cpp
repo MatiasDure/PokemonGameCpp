@@ -24,10 +24,11 @@ int main()
 	srand(time(0));
 
 	//creating window
-	sf::RenderWindow window(sf::VideoMode(1200,720),"MyCppGame!", sf::Style::Default);
+	sf::RenderWindow window(sf::VideoMode(1200,720),"MyCppGame!");
 	window.setFramerateLimit(60);
 	
-	GameManager gameManager;
+	const string gameManagerIdentifier = "GameManager";
+	GameManager gameManager(gameManagerIdentifier);
 	SceneManager sceneManager;
 	CreateScenes(sceneManager, window, gameManager);
 	//fps
@@ -65,45 +66,43 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window, GameManager& 
 	//Main menu scene
 	Scene* mainMenuScene = new Scene("MainMenu", 0);
 
-	int yOffsetMainMenu = 150;
+	int yOffsetMainMenu = 120;
 
 	//Buttons
 	//Switching to the fighting scene
-	Button* start = new Button("Start", "start.png");
-	start->SetBehavior([&manager]() {
+	Button* start = new Button("StartButton", "start.png");
+	start->SetBehavior([&manager, &gameManager]() {
+		if (gameManager.GetDisplayingScores()) return;
 		manager.StackScene("Fight");
 		});
 	start->SetPosition(windowSize.x/2, windowSize.y/5 + yOffsetMainMenu);
+	start->SetScale(0.8f, 0.8f);
 
-	Button* scores = new Button("Scores", "scores.png");
+	Button* scores = new Button("ScoresButton", "scores.png");
 	scores->SetBehavior([&gameManager]() {
-		gameManager.ReadHighScores();
+		if (gameManager.GetDisplayingScores()) return;
+		gameManager.DisplayHighScore();
 		});
+	scores->SetPosition(windowSize.x / 2, windowSize.y / 5 + yOffsetMainMenu * 2);
+	scores->SetScale(0.8f, 0.8f);
 
 	//Resetting highscore file
-	Button* erase = new Button("Erase", "clearData.png");
+	Button* erase = new Button("EraseButton", "clearData.png");
 	erase->SetBehavior([&gameManager]() {
-		//ofstream myFile("highscores.txt", ios::trunc);
-		//if (myFile.is_open())
-		//{
-		//	//Creating a new empty leaderboard
-		//	for (int i = 1; i < 6; i++)
-		//	{
-		//		myFile << 0 << "\n";
-		//	}
-		//	myFile.close();
-		//}
-		//else printf("Not able to open file\n");
+		if (gameManager.GetDisplayingScores()) return;
 		gameManager.ClearHighScores();
 		});
-	erase->SetPosition(windowSize.x / 2, windowSize.y / 5 + yOffsetMainMenu * 2);
+	erase->SetPosition(windowSize.x / 2, windowSize.y / 5 + yOffsetMainMenu * 3);
+	erase->SetScale(0.8f, 0.8f);
 
 	//Quit game
-	Button* quit = new Button("Quit", "quit.png");
-	quit->SetBehavior([&window]() {
+	Button* quit = new Button("QuitButton", "quit.png");
+	quit->SetBehavior([&window, &gameManager]() {
+		if (gameManager.GetDisplayingScores()) return;
 		window.close();
 		});
-	quit->SetPosition(windowSize.x / 2, windowSize.y / 5 + yOffsetMainMenu * 3);
+	quit->SetPosition(windowSize.x / 2, windowSize.y / 5 + yOffsetMainMenu * 4);
+	quit->SetScale(0.8f, 0.8f);
 
 	//Title
 	TextObject* title = new TextObject("Title");
@@ -115,10 +114,12 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window, GameManager& 
 	title->SetPosition(windowSize.x/2 - titleBounds.width/2, windowSize.y/20);
 
 	//Adding objects to the scene
+	mainMenuScene->AddObject(title);
 	mainMenuScene->AddObject(start);
+	mainMenuScene->AddObject(scores);
 	mainMenuScene->AddObject(erase);
 	mainMenuScene->AddObject(quit);
-	mainMenuScene->AddObject(title);
+	mainMenuScene->AddObject(&gameManager);
 
 	//Fight scene
 	Scene* fightScene = new Scene("Fight", 1);
@@ -139,8 +140,9 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window, GameManager& 
 	game->SetGameManager(&gameManager);
 	
 	//buttons
+	
 	//attack button for player
-	Button* attack = new Button("Attack", "attack.png");
+	Button* attack = new Button("AttackButton", "attack.png");
 	attack->SetBehavior([player, game]() {
 		if (!player->GetTurn() || game->gameLost() || game->gameWon()) return;
 		player->Attack(*player->GetTarget());
@@ -150,7 +152,7 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window, GameManager& 
 	attack->SetScale(0.6f, 0.6f);
 
 	//Heal button for player
-	Button* heal = new Button("Heal", "heal.png");
+	Button* heal = new Button("HealButton", "heal.png");
 	heal->SetBehavior([player, game]() {
 		if (!player->GetTurn() || game->gameLost() || game->gameWon()) return;
 		int amountHeal = 30;
@@ -161,7 +163,7 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window, GameManager& 
 	heal->SetScale(0.6f, 0.6f);
 
 	//skip button for player
-	Button* skip = new Button("Skip", "skip.png");
+	Button* skip = new Button("SkipButton", "skip.png");
 	skip->SetBehavior([player, game]() {
 		if (!player->GetTurn() || game->gameLost() || game->gameWon()) return;
 		game->SwitchTurns();
@@ -170,7 +172,7 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window, GameManager& 
 	skip->SetScale(0.6f, 0.6f);
 
 	//Switching back to main menu
-	Button* back = new Button("Back", "back.png");
+	Button* back = new Button("BackButton", "back.png");
 	back->SetBehavior([&manager, game]() {
 		game->ResetGame(true);
 		manager.PopScene();

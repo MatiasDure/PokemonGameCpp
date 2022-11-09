@@ -23,6 +23,7 @@ public:
 	void Update(sf::RenderWindow& window);
 	void AddObject(GameObject* objToAdd);
 	void RemoveObject(const string identifierOfObj);
+	void RemoveObjectInStack(const string identifierOfObj);
 	void HandleEvent(sf::Event& event, sf::RenderWindow& window);
 	string GetIdentifier(void) const;
 	int GetPopForce(void) const;

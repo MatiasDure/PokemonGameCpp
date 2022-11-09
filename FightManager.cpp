@@ -5,7 +5,7 @@
 FightManager::FightManager(Player& player, Enemy& enemy, string identifier, GameObject* parent) :
 	GameObject(identifier, parent),
 	player(player), enemy(enemy), score(0), seed(0), win(false), lose(false), TWO_SECONDS(120), lengthOfHighScores(4),
-	turn("Turn"), playerHp("PlayerHP"), enemyHp("EnemyHP"), continueButton("Continue", "continue.png")
+	turn("Turn"), playerHp("PlayerHP"), enemyHp("EnemyHP"), continueButton("ContinueButton", "continue.png")
 {
 	
 	//Setting continue button
@@ -54,6 +54,8 @@ FightManager::FightManager(Player& player, Enemy& enemy, string identifier, Game
 	enemyHp.SetPosition(50, 50);
 	enemyHp.SetSize(40);
 	enemyTimer = TWO_SECONDS;
+
+	lostTimer = TWO_SECONDS;
 }
 
 //Clearing the pokemons allocated in the heap
@@ -102,7 +104,8 @@ void FightManager::Update(sf::RenderWindow& window)
 		else
 		{
 			this->UpdateText(this->turn, "You Lose!");
-			this->ResetGame(true);
+			if (lostTimer <= 0) this->ResetGame(true);
+			else lostTimer--;
 		}
 		return;
 	}
@@ -127,7 +130,7 @@ void FightManager::Update(sf::RenderWindow& window)
 
 void FightManager::RenderGameObject(sf::RenderWindow& window)
 {
-	GameObject::RenderGameObject(window);
+	CheckActive(active);
 	turn.RenderGameObject(window);
 	playerHp.RenderGameObject(window);
 	enemyHp.RenderGameObject(window);
@@ -137,7 +140,7 @@ void FightManager::RenderGameObject(sf::RenderWindow& window)
 
 void FightManager::HandleEvent(sf::Event& event, sf::RenderWindow& window)
 {
-	GameObject::HandleEvent(event, window);
+	CheckActive(active);
 	this->continueButton.HandleEvent(event, window);
 }
 
@@ -186,6 +189,7 @@ void FightManager::ResetGame(bool backToMainMenu)
 	this->lose = false;
 	this->increasedPoint = false;
 	this->enemyTimer = TWO_SECONDS;
+	this->lostTimer = TWO_SECONDS;
 	
 	//resetting pokemons
 	this->player.GetPokemon()->ResetPokemon();
@@ -197,6 +201,7 @@ void FightManager::ResetGame(bool backToMainMenu)
 	this->enemy.SetRandomPokemon(PokemonPicker::RandomPokemon(pokemonList, seed));
 	this->seed++;
 
+	//Moving pokes into new position
 	this->MovePokesIntoPos();
 
 	if (backToMainMenu)
@@ -204,47 +209,15 @@ void FightManager::ResetGame(bool backToMainMenu)
 		cout << "Score this round: " << score << "!" << endl;
 		//Create function to compare the score gotten this turn with highscore, and update it if necessary
 		if (this->gameManager) this->gameManager->SetHighScores(this->score, this->gameManager->CompareHighScores(score, lengthOfHighScores));
-		else printf("Game Manager not found in FightManager object!");
+		else printf("Game Manager not found in FightManager object!\n");
 		score = 0;
 	}
-}
-
-void FightManager::NextLevel()
-{
 }
 
 void FightManager::UpdateText(TextObject& textObj, const string text)
 {
 	textObj.SetText(text);
 }
-
-//void FightManager::SetHighScores(int indexToPlace)
-//{
-//	for (int i = lengthOfHighScores; i > indexToPlace - 1; i--)
-//	{
-//		if(i != lengthOfHighScores) highscores[i + 1] = highscores[i];
-//		highscores[i] = score;
-//	}
-//}
-
-//int FightManager::CompareHighScores(int score, int index)
-//{
-//	if (index < 0) return 0;
-//	if (score > highscores[index]) CompareHighScores(score, index - 1);
-//	else return index - 1;
-//}
-
-//void FightManager::ReadHighScores()
-//{
-//	string line;
-//	ifstream myFile("highscores.txt");
-//	int i = 0;
-//	while (getline(myFile, line) && i < 5)
-//	{
-//		stringstream lineStream(line);
-//		lineStream >> this->highscores[i++];
-//	}
-//}
 
 void FightManager::InitializePokemonList()
 {
@@ -259,10 +232,10 @@ void FightManager::InitializePokemonList()
 		stringstream lineStream(line);
 
 		//pushing the values to the variables respectively
-		lineStream >> name >> power >> hp >> stamina;
+		lineStream >> name >> power >> hp;
 
 		//allocating memory in heap for each pokemon
-		this->pokemonList.push_back(new Pokemon(name, power, hp, stamina, name, name + ".png"));
+		this->pokemonList.push_back(new Pokemon(name, power, hp, name, name + ".png"));
 	}
 	myFile.close();
 }

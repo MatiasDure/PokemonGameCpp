@@ -1,11 +1,11 @@
 #include "Pokemon.hpp"
 
-Pokemon::Pokemon(string name, int power, int hp, int stamina, string identifier, string fileName, GameObject* parent)
+Pokemon::Pokemon(string name, int power, int hp, string identifier, string fileName, GameObject* parent)
 	:SpriteObject(identifier, fileName, parent),
-	pokeName(name), power(power), hp(hp), stamina(stamina), originalHp(hp) {}
+	pokeName(name), power(power), hp(hp), originalHp(hp) {}
 
 Pokemon::Pokemon(Pokemon& other) 
-	:Pokemon(other.GetName(), other.GetPower(), other.GetHP(), other.GetStamina(), other.GetName(),	other.GetFileName(), 
+	:Pokemon(other.GetName(), other.GetPower(), other.GetHP(), other.GetName(),	other.GetFileName(), 
 		other.GetParent()) {}
 
 void Pokemon::TakeDamage(int damage)
@@ -35,13 +35,9 @@ int Pokemon::GetHP(void) const
 {
 	return this->hp;
 }
-int Pokemon::GetStamina(void) const
-{
-	return this->stamina;
-}
 
 std::ostream& operator<<(std::ostream& stream, const Pokemon& poke)
 {
 	return stream << "Pokemon:\nName: " << poke.GetName() << "\nPower: " << poke.GetPower()
-		<< "\nHP: " << poke.GetHP() << "\nStamina: " << poke.GetStamina() << endl;
+		<< "\nHP: " << poke.GetHP() << endl;
 }

@@ -133,7 +133,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BattleControl.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FightManager.cpp" />
@@ -150,7 +149,6 @@
     <ClCompile Include="Week2.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BattleControl.hpp" />
     <ClInclude Include="Button.hpp" />
     <ClInclude Include="Enemy.hpp" />
     <ClInclude Include="FightManager.h" />

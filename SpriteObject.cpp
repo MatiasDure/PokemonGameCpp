@@ -83,6 +83,11 @@ void SpriteObject::ScaleByMultiplier(const float x, const float y)
 	this->UpdateBoundary();
 }
 
+void SpriteObject::SetColor(sf::Color c)
+{
+	this->sprite.setColor(c);
+}
+
 string SpriteObject::GetFileName(void) const
 {
 	return this->fileName;
