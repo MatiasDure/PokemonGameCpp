@@ -2,7 +2,7 @@
 
 GameManager::GameManager(string identifier, GameObject* parent) :
 	GameObject(identifier, parent), 
-	scores("Scores"), scoresBack("BackManagerButton", "back.png"), scoresBackground("ScoresBackground","scoresBackground.jpg")
+	scores("Scores"), scoresBack("BackManagerButton", "buttonImgs/back.png"), scoresBackground("ScoresBackground","bgImgs/scoresBackground.jpg")
 {
 	lengthIndexHighScores = 4;
 	HideHighScore();
@@ -11,7 +11,7 @@ GameManager::GameManager(string identifier, GameObject* parent) :
 
 	//setting up score text
 	this->scores.SetColor(sf::Color::White);
-	this->scores.SetFont("font.ttf");
+	this->scores.SetFont("fonts/font.ttf");
 	this->scores.SetSize(50);
 	this->scores.SetPosition(450, 200);
 
@@ -59,7 +59,7 @@ void GameManager::SetHighScores(int scoreToPlace, int indexToPlace )
 		highscores[i] = scoreToPlace;
 	}
 
-	ofstream myFile("highscores.txt", ios::trunc);
+	ofstream myFile("textFiles/highscores.txt", ios::trunc);
 
 	if (myFile.is_open())
 	{
@@ -85,7 +85,7 @@ int GameManager::CompareHighScores(int score, int index)
 void GameManager::ReadHighScores(void)
 {
 	string line;
-	ifstream myFile("highscores.txt");
+	ifstream myFile("textFiles/highscores.txt");
 	int i = 0;
 	while (getline(myFile, line) && i < 5)
 	{
@@ -97,7 +97,7 @@ void GameManager::ReadHighScores(void)
 //Resetting Highscore file with 0s
 void GameManager::ClearHighScores(void)
 {
-	ofstream myFile("highscores.txt", ios::trunc);
+	ofstream myFile("textFiles/highscores.txt", ios::trunc);
 	if (myFile.is_open())
 	{
 		//Creating a new empty leaderboard and resetting highscores

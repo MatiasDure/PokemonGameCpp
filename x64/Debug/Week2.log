@@ -1,3 +1,72 @@
-﻿  GameManager.cpp
-C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\GameManager.cpp(82): warning C4715: 'GameManager::CompareHighScores': not all control paths return a value
+﻿  FightManager.cpp
+C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\FightManager.cpp(13,40): warning C4305: 'argument': truncation from 'double' to 'const float'
+C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\FightManager.cpp(229,18): warning C4101: 'stamina': unreferenced local variable
+  Week2.cpp
+C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\Week2.cpp(24,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\Week2.cpp(78,52): warning C4244: 'argument': conversion from 'T' to 'const float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\Week2.cpp(78,33): warning C4244: 'argument': conversion from 'T' to 'const float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\Week2.cpp(86,57): warning C4244: 'argument': conversion from 'T' to 'const float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\Week2.cpp(86,35): warning C4244: 'argument': conversion from 'T' to 'const float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\Week2.cpp(95,56): warning C4244: 'argument': conversion from 'T' to 'const float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\Week2.cpp(95,34): warning C4244: 'argument': conversion from 'T' to 'const float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\Week2.cpp(104,55): warning C4244: 'argument': conversion from 'T' to 'const float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\Week2.cpp(104,33): warning C4244: 'argument': conversion from 'T' to 'const float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\Week2.cpp(114,71): warning C4244: 'argument': conversion from 'T' to 'const float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\Week2.cpp(151,39): warning C4244: 'argument': conversion from 'T' to 'const float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\Week2.cpp(162,52): warning C4244: 'argument': conversion from 'T' to 'const float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\Week2.cpp(171,37): warning C4244: 'argument': conversion from 'T' to 'const float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\Week2.cpp(180,52): warning C4244: 'argument': conversion from 'T' to 'const float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+  Generating Code...
   Week2.vcxproj -> C:\Users\matid\Documents\CMGT_Saxion\year2\term1\cpp\week3\exercises\Week3\x64\Debug\Week2.exe

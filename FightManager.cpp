@@ -5,7 +5,7 @@
 FightManager::FightManager(Player& player, Enemy& enemy, string identifier, GameObject* parent) :
 	GameObject(identifier, parent),
 	player(player), enemy(enemy), score(0), seed(0), win(false), lose(false), TWO_SECONDS(120), lengthOfHighScores(4),
-	turn("Turn"), playerHp("PlayerHP"), enemyHp("EnemyHP"), continueButton("ContinueButton", "continue.png")
+	turn("Turn"), playerHp("PlayerHP"), enemyHp("EnemyHP"), continueButton("ContinueButton", "buttonImgs/continue.png")
 {
 	
 	//Setting continue button
@@ -37,19 +37,19 @@ FightManager::FightManager(Player& player, Enemy& enemy, string identifier, Game
 	enemyHpText = "Enemy's HP: " + to_string(enemy.GetPokemon()->GetHP());
 	
 	turn.SetText(turnText);
-	turn.SetFont("font.ttf");
+	turn.SetFont("fonts/font.ttf");
 	turn.SetColor(sf::Color::White);
 	turn.SetPosition(400, 50);
 	turn.SetSize(50);
 
 	playerHp.SetText(playerHpText);
-	playerHp.SetFont("font2.ttf");
+	playerHp.SetFont("fonts/font2.ttf");
 	playerHp.SetColor(sf::Color::Blue);
 	playerHp.SetPosition(50, 100);
 	playerHp.SetSize(40);
 
 	enemyHp.SetText(enemyHpText);
-	enemyHp.SetFont("font2.ttf");
+	enemyHp.SetFont("fonts/font2.ttf");
 	enemyHp.SetColor(sf::Color::Red);
 	enemyHp.SetPosition(50, 50);
 	enemyHp.SetSize(40);
@@ -222,7 +222,7 @@ void FightManager::UpdateText(TextObject& textObj, const string text)
 void FightManager::InitializePokemonList()
 {
 	string line;
-	ifstream myFile("pokemons.txt");
+	ifstream myFile("textFiles/pokemons.txt");
 	while (getline(myFile, line))
 	{
 		string name;
@@ -235,7 +235,7 @@ void FightManager::InitializePokemonList()
 		lineStream >> name >> power >> hp;
 
 		//allocating memory in heap for each pokemon
-		this->pokemonList.push_back(new Pokemon(name, power, hp, name, name + ".png"));
+		this->pokemonList.push_back(new Pokemon(name, power, hp, name, "pokemonImgs/" + name + ".png"));
 	}
 	myFile.close();
 }
