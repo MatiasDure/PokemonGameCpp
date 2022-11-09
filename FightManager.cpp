@@ -55,7 +55,7 @@ FightManager::FightManager(Player& player, Enemy& enemy, string identifier, Game
 	enemyHp.SetSize(40);
 	enemyTimer = TWO_SECONDS;
 
-	lostTimer = TWO_SECONDS;
+	lostTimer = TWO_SECONDS * 2;
 }
 
 //Clearing the pokemons allocated in the heap
@@ -103,7 +103,7 @@ void FightManager::Update(sf::RenderWindow& window)
 		}
 		else
 		{
-			this->UpdateText(this->turn, "You Lose!");
+			this->UpdateText(this->turn, "You Lose!\nScore: " + std::to_string(score));
 			if (lostTimer <= 0) this->ResetGame(true);
 			else lostTimer--;
 		}
@@ -189,7 +189,7 @@ void FightManager::ResetGame(bool backToMainMenu)
 	this->lose = false;
 	this->increasedPoint = false;
 	this->enemyTimer = TWO_SECONDS;
-	this->lostTimer = TWO_SECONDS;
+	this->lostTimer = TWO_SECONDS * 2;
 	
 	//resetting pokemons
 	this->player.GetPokemon()->ResetPokemon();
@@ -206,7 +206,6 @@ void FightManager::ResetGame(bool backToMainMenu)
 
 	if (backToMainMenu)
 	{
-		cout << "Score this round: " << score << "!" << endl;
 		//Create function to compare the score gotten this turn with highscore, and update it if necessary
 		if (this->gameManager) this->gameManager->SetHighScores(this->score, this->gameManager->CompareHighScores(score, lengthOfHighScores));
 		else printf("Game Manager not found in FightManager object!\n");

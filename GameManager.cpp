@@ -105,7 +105,6 @@ void GameManager::ClearHighScores(void)
 		{
 			myFile << 0 << "\n";
 			highscores[i] = 0;
-			printf("%d: %d\n",i+1, highscores[i]);
 		}
 		myFile.close();
 	}

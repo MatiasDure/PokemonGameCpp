@@ -135,6 +135,7 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window, GameManager& 
 	attack->SetBehavior([player, game]() {
 		if (!player->GetTurn() || game->gameLost() || game->gameWon()) return;
 		player->Attack(*player->GetTarget());
+		printf("Player attacked!\n");
 		game->SwitchTurns();
 		});
 	attack->SetPosition(windowSize.x / 2 + xOffsetFight, 580);
@@ -146,6 +147,7 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window, GameManager& 
 		if (!player->GetTurn() || game->gameLost() || game->gameWon()) return;
 		int amountHeal = 30;
 		player->Heal(amountHeal);
+		printf("Player healed!\n");
 		game->SwitchTurns();
 		});
 	heal->SetPosition(windowSize.x / 2 + xOffsetFight + 250, 580);
@@ -156,6 +158,7 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window, GameManager& 
 	skip->SetBehavior([player, game]() {
 		if (!player->GetTurn() || game->gameLost() || game->gameWon()) return;
 		game->SwitchTurns();
+		printf("Player did nothing!\n");
 		});
 	skip->SetPosition(windowSize.x / 2 + xOffsetFight, 680);
 	skip->SetScale(0.6f, 0.6f);
