@@ -38,7 +38,7 @@ void TextObject::SetSize(const int x)
 
 void TextObject::RenderGameObject(sf::RenderWindow& window)
 {
-	if (!active) return;
+	CheckActive(active);
 	window.draw(this->textObj);
 }
 

@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#define CheckActive(active) { if (!active) return; }
 
 using namespace std;
 
@@ -31,8 +32,8 @@ public:
 	void SetParent(GameObject* parent);
 	void RemoveParent(void);
 
-	virtual void HandleEvent(sf::Event& event, sf::RenderWindow& window) {};
-	virtual void RenderGameObject(sf::RenderWindow& window) {};
+	virtual void HandleEvent(sf::Event& event, sf::RenderWindow& window);
+	virtual void RenderGameObject(sf::RenderWindow& window);
 	virtual void Update(sf::RenderWindow& window);
 	virtual void MoveObj(const sf::Vector2f vec);
 	virtual void MoveObj(const float x, const float y);

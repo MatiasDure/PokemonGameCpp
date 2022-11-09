@@ -1,12 +1,10 @@
 #include "PokemonTrainer.hpp"
-//#include "ctime"
 
 PokemonTrainer::PokemonTrainer(string identifier, string fileName, PokemonTrainer* target, GameObject* parent)
 	:SpriteObject(identifier, fileName, parent), target(target), poke(NULL), turn(false) {}
 
 void PokemonTrainer::RenderGameObject(sf::RenderWindow& window)
 {
-	if (!active) return;
 	SpriteObject::RenderGameObject(window);
 	if(poke != NULL) poke->RenderGameObject(window);
 }
@@ -26,6 +24,11 @@ void PokemonTrainer::SetTarget(PokemonTrainer* target)
 void PokemonTrainer::SwitchTurn()
 {
 	turn = !turn;
+}
+
+void PokemonTrainer::SetTurn(bool turn)
+{
+	this->turn = turn;
 }
 
 void PokemonTrainer::TakeDamage(const int damage)

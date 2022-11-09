@@ -75,7 +75,9 @@ void GameObject::SetPosition(const float x, const float y)
 	}
 }
 
-void GameObject::Update(sf::RenderWindow& window){}
+void GameObject::HandleEvent(sf::Event& event, sf::RenderWindow& window) { CheckActive(active) }
+void GameObject::RenderGameObject(sf::RenderWindow& window) { CheckActive(active) }
+void GameObject::Update(sf::RenderWindow& window) { CheckActive(active) }
 
 bool GameObject::HasParent() const
 {

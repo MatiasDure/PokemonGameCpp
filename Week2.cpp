@@ -125,7 +125,7 @@ void CreateScenes(SceneManager& manager, sf::RenderWindow& window)
 	//Switching back to main menu
 	Button* back = new Button("Back", "back.png");
 	back->SetBehavior([&manager, game]() {
-		game->ResetGame();
+		game->ResetGame(true);
 		manager.PopScene();
 		});
 	back->SetPosition(1140, 80);

@@ -9,23 +9,22 @@ private:
 protected:
 	bool turn;
 	PokemonTrainer* target;
-//pokemon
+	//pokemon
 	Pokemon* poke;
 public:
-//constructor
+	//constructor
 	PokemonTrainer(string identifier, string fileName, PokemonTrainer* target = NULL, GameObject* parent = NULL);
-	//void SpawnPokemon();
 	void RenderGameObject(sf::RenderWindow& window) override;
 	void SetRandomPokemon(Pokemon* pokemon);
 	void SetTarget(PokemonTrainer* target);
 	void SwitchTurn();
-	
-	//Still needs implementation!!!
+	void SetTurn(bool turn);
+
+	//game actions
 	void TakeDamage(const int damage);
 	virtual void Attack(PokemonTrainer& otherTrainer);
 	virtual void Heal(const int amount);
 	virtual void Skip() {};
-	//-----------------------------
 
 	//Getters
 	Pokemon* GetPokemon(void);

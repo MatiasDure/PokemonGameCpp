@@ -18,11 +18,16 @@ SpriteObject::SpriteObject(string identifier, string fileName, GameObject* paren
 
 void SpriteObject::RenderGameObject(sf::RenderWindow& window)
 {
-	if (!active) return;
+	//GameObject::RenderGameObject(window);
+	CheckActive(active);
 	window.draw(this->sprite);
 }
 
-void SpriteObject::Update(sf::RenderWindow& window) {}
+void SpriteObject::Update(sf::RenderWindow& window) 
+{
+	//GameObject::Update(window);
+	CheckActive(active);
+}
 
 void SpriteObject::MoveObj(const sf::Vector2f vec)
 {

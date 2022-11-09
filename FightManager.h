@@ -3,26 +3,25 @@
 #include <sstream>
 #include "Player.hpp"
 #include "Enemy.hpp"
-#include "Pokemon.hpp"
 #include "TextObject.hpp"
 #include "Button.hpp"
-#include <Windows.h>
 
 class FightManager: public GameObject
 {
 private:
-	bool win, lose;
+	bool win, lose, increasedPoint;
 	int highscores[5];
 	int score;
 	int seed;
+	const int TWO_SECONDS;
 	int enemyTimer;
-	Player& player;
-	Enemy& enemy;
-	TextObject turn, playerHp, enemyHp;
-	Button continueButton;
+	class Player& player;
+	class Enemy& enemy;
+	class TextObject turn, playerHp, enemyHp;
+	class Button continueButton;
 	string turnText, playerHpText, enemyHpText;
 	sf::Font font;
-	vector<Pokemon*> pokemonList;
+	vector<class Pokemon*> pokemonList;
 	void DecideStartingPlayer(void);
 	void InitializePokemonList(void);
 	void CheckGameStatus(const int playerLife, const int enemyLife);
@@ -33,7 +32,7 @@ public:
 	void SetHighScores(void);
 	void ReadHighScores(void);
 	void SwitchTurns(void);
-	void ResetGame(void);
+	void ResetGame(bool backToMainMenu);
 	void NextLevel(void);
 	void UpdateText(TextObject& textObj, const string text);
 	void Update(sf::RenderWindow& window) override;

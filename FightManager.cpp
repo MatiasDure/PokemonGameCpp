@@ -1,14 +1,17 @@
 #include "FightManager.h"
+#include "Pokemon.hpp"
 
 FightManager::FightManager(Player& player, Enemy& enemy, string identifier, GameObject* parent) :
 	GameObject(identifier, parent),
-	player(player), enemy(enemy), score(0), seed(0), win(false), lose(false), enemyTimer(120),
+	player(player), enemy(enemy), score(0), seed(0), win(false), lose(false), TWO_SECONDS(120),
 	turn("Turn"), playerHp("PlayerHP"), enemyHp("EnemyHP"), continueButton("Continue", "start.png")
 {
 	this->continueButton.SetPosition(600,400);
 	this->continueButton.SetScale(0.6, 0.6);
 	this->continueButton.SetActive(false);
-	this->continueButton.SetBehavior([]() {std::cout << "button clicked!" << endl;});
+	this->continueButton.SetBehavior([this]() {
+		this->ResetGame(false);
+		});
 
 	this->InitializePokemonList();
 	this->player.SetRandomPokemon(PokemonPicker::RandomPokemon(pokemonList, seed));
@@ -39,6 +42,7 @@ FightManager::FightManager(Player& player, Enemy& enemy, string identifier, Game
 	enemyHp.SetColor(sf::Color::Red);
 	enemyHp.SetPosition(700, 550);
 	enemyHp.SetSize(50);
+	enemyTimer = TWO_SECONDS;
 }
 
 //Clearing the pokemons allocated in the heap
@@ -61,8 +65,9 @@ void FightManager::DecideStartingPlayer()
 
 void FightManager::Update(sf::RenderWindow& window)
 {
-	if (!active) return;
 
+	CheckActive(active);
+	
 	//checking game status
 	if (!(win || lose))
 	{
@@ -74,32 +79,45 @@ void FightManager::Update(sf::RenderWindow& window)
 	}
 	else
 	{
-		if (win) this->continueButton.SetActive(true);
-		this->UpdateText(this->turn, win ? "You Win!" : "You Lose!");
+		if (win)
+		{
+			if (!increasedPoint)
+			{
+				score++;
+				increasedPoint = true;
+			}
+			this->continueButton.SetActive(true);
+			this->UpdateText(this->turn,"You Win!");
+		}
+		else
+		{
+			this->UpdateText(this->turn, "You Lose!");
+			this->ResetGame(true);
+		}
 		return;
 	}
 
-	//players turn
+	//player's turn
 	if (this->player.GetTurn())
 	{
 		this->UpdateText(this->turn, "Player's Turn");
 		return;
 	}
 
-	//simulate thinking time for enemy "AI"
+	//Enemy's turn: simulating thinking time for enemy "AI"
 	this->UpdateText(this->turn, "Enemy's Turn");
 	if (enemyTimer <= 0)
 	{
 		this->enemy.DecideAction();
 		this->SwitchTurns();
-		enemyTimer = 120;
+		enemyTimer = TWO_SECONDS;
 	}
 	else enemyTimer--;
 }
 
 void FightManager::RenderGameObject(sf::RenderWindow& window)
 {
-	if (!active) return;
+	GameObject::RenderGameObject(window);
 	turn.RenderGameObject(window);
 	playerHp.RenderGameObject(window);
 	enemyHp.RenderGameObject(window);
@@ -109,6 +127,7 @@ void FightManager::RenderGameObject(sf::RenderWindow& window)
 
 void FightManager::HandleEvent(sf::Event& event, sf::RenderWindow& window)
 {
+	GameObject::HandleEvent(event, window);
 	this->continueButton.HandleEvent(event, window);
 }
 
@@ -128,13 +147,21 @@ void FightManager::SwitchTurns()
 	this->enemy.SwitchTurn();
 }
 
-void FightManager::ResetGame()
+void FightManager::ResetGame(bool backToMainMenu)
 {
+	//deactivating continue button
 	this->continueButton.SetActive(false);
+
+	//deciding new turn
+	this->player.SetTurn(false);
+	this->enemy.SetTurn(false);
+	this->DecideStartingPlayer();
 
 	//resetting game status
 	this->win = false;
 	this->lose = false;
+	this->increasedPoint = false;
+	this->enemyTimer = TWO_SECONDS;
 	
 	//resetting pokemons
 	this->player.GetPokemon()->ResetPokemon();
@@ -145,6 +172,15 @@ void FightManager::ResetGame()
 	this->seed++;
 	this->enemy.SetRandomPokemon(PokemonPicker::RandomPokemon(pokemonList, seed));
 	this->seed++;
+
+	if (backToMainMenu)
+	{
+		cout << score << "!!!!!!!!!!!!!" << endl;
+		//Create function to compare the score gotten this turn with highscore, and update it if necessary
+
+
+		score = 0;
+	}
 }
 
 void FightManager::NextLevel()

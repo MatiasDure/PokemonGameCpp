@@ -5,7 +5,7 @@ Button::Button(string identifier, string fileName, GameObject* parent)
 
 void Button::HandleEvent(sf::Event& event, sf::RenderWindow& window)
 {
-	if (!active) return;
+	CheckActive(active);
 	if (mouseHover && event.type == sf::Event::MouseButtonPressed)
 	{
 		try
@@ -20,7 +20,7 @@ void Button::HandleEvent(sf::Event& event, sf::RenderWindow& window)
 
 void Button::Update(sf::RenderWindow& window)
 {
-	if (!active) return;
+	CheckActive(active);
 	sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 	if (spriteBoundary.contains(mousePos.x, mousePos.y))
 	{
